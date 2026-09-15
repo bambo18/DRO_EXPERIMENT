@@ -1,1 +1,22 @@
+# Official GAS-DRO reference
 gas_dro_official/
+gas_dro_official.zip
+
+# Generated datasets
+data/generated/
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Raw experimental outputs
+results/raw/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VSCode / IDE
+.vscode/
