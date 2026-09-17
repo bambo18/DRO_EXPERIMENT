@@ -1533,351 +1533,6 @@ class VectorDiffusion(
 
 
 # ============================================================
-# Epoch-based training helper
-#
-# Retained for existing smoke / pilot scripts.
-#
-# This is NOT the official 7000-iteration training protocol.
-# ============================================================
-
-def train_vector_diffusion(
-    model: VectorDiffusion,
-    data: torch.Tensor,
-    device: torch.device | str,
-    epochs: int = 100,
-    batch_size: int = 128,
-    lr: float = 1e-3,
-    grad_clip: Optional[
-        float
-    ] = 1.0,
-    standardizer: Optional[
-        VectorStandardizer
-    ] = None,
-    verbose_every: int = 10,
-) -> Tuple[
-    List[float],
-    VectorStandardizer,
-]:
-
-    """
-    Epoch-based helper used only by our smoke / diagnostic runs.
-
-    Final official GAS-DRO baseline should use:
-
-        train_vector_diffusion_steps()
-
-    because the official repository trains using a fixed number
-    of optimizer iterations rather than dataset epochs.
-    """
-
-    device = torch.device(
-        device
-    )
-
-
-    if data.ndim != 2:
-
-        raise ValueError(
-            "data must have shape [N, D]."
-        )
-
-
-    if (
-        data.shape[1]
-        !=
-        model.data_dim
-    ):
-
-        raise ValueError(
-
-            f"Expected D="
-            f"{model.data_dim}, "
-
-            f"got D="
-            f"{data.shape[1]}."
-        )
-
-
-    data = data.float()
-
-
-    check_finite(
-        data,
-        "raw_training_data",
-    )
-
-
-    # --------------------------------------------------------
-    # Standardization
-    # --------------------------------------------------------
-
-    if standardizer is None:
-
-        standardizer = (
-            VectorStandardizer()
-            .fit(
-                data
-            )
-        )
-
-
-    normalized_data = (
-        standardizer
-        .transform(
-            data
-        )
-    )
-
-
-    dataset = TensorDataset(
-        normalized_data
-    )
-
-
-    loader = DataLoader(
-
-        dataset,
-
-        batch_size=
-            batch_size,
-
-        shuffle=
-            True,
-
-        drop_last=
-            False,
-    )
-
-
-    model = model.to(
-        device
-    )
-
-
-    # Existing smoke behavior retained.
-    optimizer = torch.optim.AdamW(
-
-        model.parameters(),
-
-        lr=
-            lr,
-
-        weight_decay=
-            1e-4,
-    )
-
-
-    history: List[
-        float
-    ] = []
-
-
-    print(
-        "\n=========================================="
-    )
-
-    print(
-        "Vector Diffusion Training"
-    )
-
-    print(
-        "=========================================="
-    )
-
-
-    print(
-        f"Samples        : "
-        f"{len(dataset)}"
-    )
-
-
-    print(
-        f"Dimensions     : "
-        f"{model.data_dim}"
-    )
-
-
-    print(
-        f"Timesteps      : "
-        f"{model.timesteps}"
-    )
-
-
-    print(
-        f"Batch size     : "
-        f"{batch_size}"
-    )
-
-
-    print(
-        f"Epochs         : "
-        f"{epochs}"
-    )
-
-
-    print(
-        f"Device         : "
-        f"{device}"
-    )
-
-
-    print(
-        "==========================================\n"
-    )
-
-
-    for epoch in range(
-
-        1,
-
-        epochs + 1,
-    ):
-
-        model.train()
-
-        epoch_loss = 0.0
-
-        sample_count = 0
-
-
-        for (batch,) in loader:
-
-            batch = batch.to(
-
-                device,
-
-                non_blocking=True,
-            )
-
-
-            optimizer.zero_grad(
-                set_to_none=True
-            )
-
-
-            loss = model.loss(
-                batch
-            )
-
-
-            check_finite(
-                loss,
-                "diffusion_training_loss",
-            )
-
-
-            loss.backward()
-
-
-            if grad_clip is not None:
-
-                grad_norm = (
-                    torch.nn.utils
-                    .clip_grad_norm_(
-
-                        model.parameters(),
-
-                        max_norm=
-                            grad_clip,
-                    )
-                )
-
-
-                if not torch.isfinite(
-                    grad_norm
-                ):
-
-                    raise RuntimeError(
-
-                        "Non-finite gradient norm "
-                        f"at epoch {epoch}."
-                    )
-
-
-            optimizer.step()
-
-
-            actual_batch_size = (
-                batch.shape[0]
-            )
-
-
-            epoch_loss += (
-
-                loss.item()
-
-                *
-
-                actual_batch_size
-            )
-
-
-            sample_count += (
-                actual_batch_size
-            )
-
-
-        avg_loss = (
-
-            epoch_loss
-
-            /
-
-            max(
-                sample_count,
-                1,
-            )
-        )
-
-
-        history.append(
-            avg_loss
-        )
-
-
-        if (
-
-            epoch == 1
-
-            or
-
-            epoch
-            %
-            verbose_every
-            == 0
-
-            or
-
-            epoch
-            ==
-            epochs
-        ):
-
-            print(
-
-                f"Epoch "
-                f"{epoch:04d}/"
-                f"{epochs} | "
-
-                f"Loss: "
-                f"{avg_loss:.6f}"
-            )
-
-
-    print(
-        "\nVector Diffusion Training Complete."
-    )
-
-
-    return (
-
-        history,
-
-        standardizer,
-    )
-
-
-# ============================================================
 # Official iteration-based diffusion training
 #
 # Matches the training semantics of the official GAS-DRO repo:
@@ -1985,26 +1640,68 @@ def train_vector_diffusion_steps(
     )
 
 
-    dataset = TensorDataset(
-        normalized_data
+    # --------------------------------------------------------
+    # Official GAS-DRO-style dataset expansion
+    #
+    # The official implementation first repeats the nominal
+    # data IN ORDER until it contains exactly:
+    #
+    #     batch_size * total_iterations
+    #
+    # samples, then uses:
+    #
+    #     shuffle=False
+    #     drop_last=True
+    #
+    # In our 5D adapter, one row [X1, X2, X3, X4, Y]
+    # corresponds to one complete diffusion sample.
+    # --------------------------------------------------------
+
+    total_samples = (
+        batch_size
+        *
+        total_iterations
     )
 
 
-    if len(dataset) == 0:
+    num_original_samples = (
+        normalized_data.shape[0]
+    )
+
+
+    if num_original_samples == 0:
 
         raise ValueError(
             "Training dataset is empty."
         )
 
 
-    # Official code uses drop_last=True.
-    #
-    # Our final nominal training set will be much larger
-    # than batch_size, so this matches official behavior.
-    drop_last = (
-        len(dataset)
-        >=
-        batch_size
+    repeat_times = (
+        total_samples
+        //
+        num_original_samples
+    ) + 1
+
+
+    expanded_data = (
+        normalized_data
+        .repeat(
+            repeat_times,
+            1,
+        )
+        [:total_samples]
+        .contiguous()
+    )
+
+
+    check_finite(
+        expanded_data,
+        "expanded_diffusion_training_data",
+    )
+
+
+    dataset = TensorDataset(
+        expanded_data
     )
 
 
@@ -2016,17 +1713,18 @@ def train_vector_diffusion_steps(
             batch_size,
 
         shuffle=
-            True,
+            False,
 
         drop_last=
-            drop_last,
+            True,
     )
 
 
-    if len(loader) == 0:
+    if len(loader) != total_iterations:
 
         raise RuntimeError(
-            "DataLoader produced zero batches."
+            f"Expected {total_iterations} batches, "
+            f"got {len(loader)}."
         )
 
 
@@ -2076,8 +1774,30 @@ def train_vector_diffusion_steps(
 
 
     print(
-        f"Samples            : "
+        f"Original samples   : "
+        f"{num_original_samples}"
+    )
+
+
+    print(
+        f"Expanded samples   : "
         f"{len(dataset)}"
+    )
+
+
+    print(
+        f"DataLoader batches : "
+        f"{len(loader)}"
+    )
+
+
+    print(
+        f"Shuffle            : False"
+    )
+
+
+    print(
+        f"Drop last          : True"
     )
 
 
@@ -2139,7 +1859,9 @@ def train_vector_diffusion_steps(
 
 
         # ----------------------------------------------------
-        # Official-style iterator restart
+        # The expanded dataset contains exactly
+        # total_iterations batches, so no iterator restart
+        # is needed in the official-style path.
         # ----------------------------------------------------
 
         try:
@@ -2148,15 +1870,13 @@ def train_vector_diffusion_steps(
                 data_iterator
             )
 
-        except StopIteration:
+        except StopIteration as exc:
 
-            data_iterator = iter(
-                loader
-            )
-
-            (batch,) = next(
-                data_iterator
-            )
+            raise RuntimeError(
+                "Diffusion DataLoader ended before "
+                "total_iterations. "
+                "Dataset expansion is misaligned."
+            ) from exc
 
 
         batch = batch.to(
