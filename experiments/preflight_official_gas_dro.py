@@ -44,9 +44,7 @@ from methods.gas_dro.gas_dro import (
     VectorGasDRO,
 )
 
-from models.mlp import (
-    RegressionMLP,
-)
+from models.mlp import build_mlp
 
 
 # ============================================================
@@ -308,11 +306,7 @@ def main():
         "=========================================="
     )
 
-    predictor = RegressionMLP(
-        input_dim=4,
-        hidden_dim=64,
-        output_dim=1,
-    )
+    predictor = build_mlp()
 
     print(
         predictor

@@ -38,8 +38,31 @@ from methods.gas_dro.vector_diffusion import (
     VectorStandardizer,
     check_finite,
 )
-from models.mlp import RegressionMLP, split_joint_xy
+from models.mlp import MLP
 
+def split_joint_xy(
+    joint: torch.Tensor,
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """
+    Split joint endogenous vector
+
+        Z = [X1, X2, X3, X4, Y]
+
+    into:
+
+        X: [N, 4]
+        y: [N, 1]
+    """
+
+    if joint.ndim != 2 or joint.shape[1] != 5:
+        raise ValueError(
+            f"Expected joint shape [N, 5], got {tuple(joint.shape)}"
+        )
+
+    x = joint[:, :4]
+    y = joint[:, 4:5]
+
+    return x, y
 
 @dataclass
 class GasDROConfig:
@@ -80,7 +103,7 @@ class VectorGasDRO:
         self,
         nominal_diffusion: VectorDiffusion,
         standardizer: VectorStandardizer,
-        predictor: RegressionMLP,
+        predictor: MLP,
         device: str | torch.device,
         config: Optional[GasDROConfig] = None,
     ):
