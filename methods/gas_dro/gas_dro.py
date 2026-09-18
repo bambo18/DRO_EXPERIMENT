@@ -106,6 +106,8 @@ class VectorGasDRO:
         predictor: MLP,
         device: str | torch.device,
         config: Optional[GasDROConfig] = None,
+        predictor_x_mean: Optional[torch.Tensor] = None,
+        predictor_x_std: Optional[torch.Tensor] = None,
     ):
         self.device = torch.device(device)
         self.config = config if config is not None else GasDROConfig()
@@ -127,6 +129,32 @@ class VectorGasDRO:
 
         self.predictor = predictor.to(self.device)
         self.standardizer = standardizer
+
+        # Predictor normalization is separate from the diffusion
+        # standardizer. The diffusion models the raw joint Z=[X,Y],
+        # while the common MLP must receive X normalized exactly as
+        # in the seed-matched ERM checkpoint.
+        self.predictor_x_mean = None
+        self.predictor_x_std = None
+
+        if predictor_x_mean is not None or predictor_x_std is not None:
+            if predictor_x_mean is None or predictor_x_std is None:
+                raise ValueError(
+                    "predictor_x_mean and predictor_x_std must be provided together."
+                )
+
+            predictor_x_mean = predictor_x_mean.detach().float().reshape(1, 4)
+            predictor_x_std = predictor_x_std.detach().float().reshape(1, 4)
+
+            if not torch.isfinite(predictor_x_mean).all():
+                raise ValueError("predictor_x_mean contains NaN/Inf.")
+            if not torch.isfinite(predictor_x_std).all():
+                raise ValueError("predictor_x_std contains NaN/Inf.")
+            if torch.any(predictor_x_std <= 0):
+                raise ValueError("predictor_x_std must be strictly positive.")
+
+            self.predictor_x_mean = predictor_x_mean.cpu()
+            self.predictor_x_std = predictor_x_std.cpu()
 
         self.mu = float(self.config.mu)
 
@@ -155,6 +183,27 @@ class VectorGasDRO:
         )
 
         return list(range(k))
+
+    def _normalize_predictor_x(
+        self,
+        x: torch.Tensor,
+    ) -> torch.Tensor:
+        """Apply the TRAIN-only normalization stored in the ERM checkpoint."""
+
+        if self.predictor_x_mean is None or self.predictor_x_std is None:
+            return x
+
+        mean = self.predictor_x_mean.to(x.device)
+        std = self.predictor_x_std.to(x.device)
+
+        x_norm = (x - mean) / std
+
+        check_finite(
+            x_norm,
+            "predictor_normalized_x",
+        )
+
+        return x_norm
 
     def _s0_iterations(
         self,
@@ -969,6 +1018,10 @@ class VectorGasDRO:
                     )
                 )
 
+                batch_x = self._normalize_predictor_x(
+                    batch_x
+                )
+
                 prediction = (
                     self.predictor(
                         batch_x
@@ -1152,6 +1205,10 @@ class VectorGasDRO:
             self.device
         )
 
+        x = self._normalize_predictor_x(
+            x
+        )
+
         self.predictor.eval()
 
         with torch.no_grad():
@@ -1273,6 +1330,10 @@ class VectorGasDRO:
 
                 optimizer.zero_grad(
                     set_to_none=True
+                )
+
+                batch_x = self._normalize_predictor_x(
+                    batch_x
                 )
 
                 prediction = (

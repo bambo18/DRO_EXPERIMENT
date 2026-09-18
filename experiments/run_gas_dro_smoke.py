@@ -176,16 +176,6 @@ def save_json(path: Path, obj: object) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--mode",
-        choices=["check", "full"],
-        default="check",
-        help=(
-            "check: verify seed-matched ERM checkpoint + normalization only; "
-            "full: run official-setting GAS-DRO training."
-        ),
-    )
-
     parser.add_argument("--seed", type=int, required=True)
 
     parser.add_argument(
@@ -281,21 +271,53 @@ def main() -> None:
     print("Diffusion joint        : raw [X1,X2,X3,X4,Y]")
     print("==========================================\n")
 
-    if args.mode == "check":
-        print("[PASS] Seed-matched ERM checkpoint loaded.")
-        print("[PASS] Train-only normalization restored.")
-        print("[PASS] Common MLP restored.")
-        print("[PASS] No OOD data required for this wiring check.")
-        return
-
     if device.type != "cuda":
         print(
-            "[WARNING] Full GAS-DRO is running on CPU. "
-            "This is expected to be very slow."
+            "[WARNING] GAS-DRO is running on CPU. "
+            "The smoke/full modes are expected to be slow."
         )
 
     # --------------------------------------------------------
-    # Official nominal diffusion settings
+    # Smoke mode is ONLY an end-to-end wiring/numerical test.
+    # It does not change the final experiment configuration.
+    #
+    # We intentionally keep the official diffusion schedule
+    # T=500, beta=[0.1, 0.5] so the numerical path that caused
+    # the alpha_bar underflow issue is still exercised.
+    # --------------------------------------------------------
+    is_smoke = True
+
+    if is_smoke:
+        smoke_n = 64
+        training_joint = real_joint[:smoke_n].clone()
+        diffusion_iterations = 200
+        outer_epochs = 1
+        generator_inner_epochs = 1
+        predictor_inner_epochs = 1
+        verbose_every = 50
+
+        print("\n==========================================")
+        print("CUDA GAS-DRO SMOKE TEST")
+        print("==========================================")
+        print("Purpose               : end-to-end test only")
+        print(f"TRAIN subset           : first {smoke_n} samples")
+        print(f"Diffusion iterations   : {diffusion_iterations}")
+        print("Diffusion T             : 500 (official schedule retained)")
+        print("Outer epochs            : 1")
+        print("Generator inner epochs  : 1")
+        print("Predictor inner epochs  : 1")
+        print("Final experiment config : NOT changed")
+        print("==========================================\n")
+    else:
+        training_joint = real_joint
+        diffusion_iterations = 7000
+        outer_epochs = 15
+        generator_inner_epochs = 10
+        predictor_inner_epochs = 2
+        verbose_every = 100
+
+    # --------------------------------------------------------
+    # Official nominal diffusion architecture/schedule
     # --------------------------------------------------------
     nominal_diffusion = VectorDiffusion(
         data_dim=5,
@@ -312,22 +334,27 @@ def main() -> None:
     diffusion_history, diffusion_standardizer = (
         train_vector_diffusion_steps(
             model=nominal_diffusion,
-            data=real_joint,
+            data=training_joint,
             device=device,
-            total_iterations=7000,
+            total_iterations=diffusion_iterations,
             batch_size=64,
             lr=1e-4,
             standardizer=None,
             grad_clip=None,
-            verbose_every=100,
+            verbose_every=verbose_every,
         )
     )
 
     diffusion_seconds = time.time() - start_time
 
+    if is_smoke:
+        nominal_filename = f"gas_dro_smoke_seed{args.seed}_nominal_diffusion.pt"
+    else:
+        nominal_filename = f"gas_dro_seed{args.seed}_nominal_diffusion.pt"
+
     nominal_path = (
         args.checkpoint_dir.resolve()
-        / f"gas_dro_seed{args.seed}_nominal_diffusion.pt"
+        / nominal_filename
     )
 
     nominal_diffusion.save(
@@ -335,19 +362,23 @@ def main() -> None:
         standardizer=diffusion_standardizer,
         extra={
             "seed": args.seed,
-            "iterations": 7000,
+            "mode": "smoke",
+            "iterations": diffusion_iterations,
             "batch_size": 64,
             "learning_rate": 1e-4,
+            "train_samples": int(training_joint.shape[0]),
         },
     )
 
     # --------------------------------------------------------
-    # Official GAS-DRO settings
+    # GAS-DRO configuration.
+    # All algorithmic hyperparameters remain official.
+    # Smoke mode only shortens loop counts.
     # --------------------------------------------------------
     config = GasDROConfig(
-        outer_epochs=15,
-        generator_inner_epochs=10,
-        predictor_inner_epochs=2,
+        outer_epochs=outer_epochs,
+        generator_inner_epochs=generator_inner_epochs,
+        predictor_inner_epochs=predictor_inner_epochs,
         batch_size=64,
         batch_repeat=4,
         generator_lr=1e-5,
@@ -378,7 +409,7 @@ def main() -> None:
     gas_start = time.time()
 
     output = gas_dro.fit(
-        real_joint=real_joint,
+        real_joint=training_joint,
     )
 
     gas_seconds = time.time() - gas_start
@@ -394,9 +425,15 @@ def main() -> None:
         device=device,
     )
 
+    final_name = (
+        f"gas_dro_smoke_seed{args.seed}_final.pt"
+        if is_smoke
+        else f"gas_dro_seed{args.seed}_final.pt"
+    )
+
     final_checkpoint_path = (
         args.checkpoint_dir.resolve()
-        / f"gas_dro_seed{args.seed}_final.pt"
+        / final_name
     )
     final_checkpoint_path.parent.mkdir(
         parents=True,
@@ -406,6 +443,7 @@ def main() -> None:
     torch.save(
         {
             "seed": args.seed,
+            "mode": "smoke",
             "erm_checkpoint": str(erm_checkpoint_path),
             "predictor_state_dict": final_predictor.state_dict(),
             "adversarial_diffusion_state_dict":
@@ -426,6 +464,7 @@ def main() -> None:
 
     summary = {
         "seed": args.seed,
+        "mode": "smoke",
         "device": str(device),
         "erm_checkpoint": str(erm_checkpoint_path),
         "initial_erm_id_mse": float(initial_id_mse),
@@ -437,9 +476,15 @@ def main() -> None:
         "ood_evaluation": "pending",
     }
 
+    result_filename = (
+        f"gas_dro_smoke_seed{args.seed}.json"
+        if is_smoke
+        else f"gas_dro_seed{args.seed}.json"
+    )
+
     result_path = (
         args.results_dir.resolve()
-        / f"gas_dro_seed{args.seed}.json"
+        / result_filename
     )
     save_json(result_path, summary)
 
