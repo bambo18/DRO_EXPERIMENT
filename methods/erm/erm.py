@@ -1,537 +1,264 @@
-"""
-Empirical Risk Minimization (ERM)
-=================================
-
-Common regression baseline.
-
-Predictor:
-    Professor-provided common MLP
-    4 -> 64 -> 64 -> 1
-
-Objective:
-    Minimize empirical mean squared error on nominal training data.
-
-Important:
-- ERM does NOT use SCM information.
-- ERM does NOT use OOD environments during training.
-- All training hyperparameters must be supplied externally so that
-  the final experiment can use the common benchmark protocol.
-"""
-
 from __future__ import annotations
 
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 import copy
 import random
-from dataclasses import dataclass
-from typing import Dict, List
 
 import numpy as np
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader, TensorDataset
 
-from torch.utils.data import (
-    DataLoader,
-    TensorDataset,
-)
+from models.mlp import build_mlp
 
-from models.mlp import MLP
-
-
-# ============================================================
-# Configuration
-# ============================================================
 
 @dataclass
 class ERMConfig:
-
-    batch_size: int
-    learning_rate: float
-    epochs: int
-
-    optimizer: str = "adam"
-
+    learning_rate: float = 1e-3
+    batch_size: int = 64
+    max_epochs: int = 200
     weight_decay: float = 0.0
-
+    patience: int = 20
+    min_delta: float = 0.0
+    optimizer: str = "adam"
     seed: int = 42
 
-    verbose: bool = True
-
-
-# ============================================================
-# Reproducibility
-# ============================================================
 
 def set_seed(seed: int) -> None:
-
     random.seed(seed)
-
     np.random.seed(seed)
-
     torch.manual_seed(seed)
 
     if torch.cuda.is_available():
-
+        torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
 
+    # Reproducibility-first settings.
+    if hasattr(torch.backends, "cudnn"):
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
-# ============================================================
-# Input validation
-# ============================================================
 
-def validate_xy(
+def _validate_xy(X: torch.Tensor, y: torch.Tensor) -> None:
+    if X.ndim != 2 or X.shape[1] != 4:
+        raise ValueError(f"Expected X shape (N, 4), got {tuple(X.shape)}")
+    if y.ndim != 2 or y.shape[1] != 1:
+        raise ValueError(f"Expected y shape (N, 1), got {tuple(y.shape)}")
+    if len(X) != len(y):
+        raise ValueError("X and y must contain the same number of samples.")
+    if not torch.isfinite(X).all() or not torch.isfinite(y).all():
+        raise ValueError("X or y contains NaN/Inf.")
+
+
+def build_optimizer(model: nn.Module, cfg: ERMConfig) -> torch.optim.Optimizer:
+    name = cfg.optimizer.lower()
+
+    if name == "adam":
+        return torch.optim.Adam(
+            model.parameters(),
+            lr=cfg.learning_rate,
+            weight_decay=cfg.weight_decay,
+        )
+
+    if name == "adamw":
+        return torch.optim.AdamW(
+            model.parameters(),
+            lr=cfg.learning_rate,
+            weight_decay=cfg.weight_decay,
+        )
+
+    if name == "sgd":
+        return torch.optim.SGD(
+            model.parameters(),
+            lr=cfg.learning_rate,
+            weight_decay=cfg.weight_decay,
+        )
+
+    raise ValueError(f"Unsupported optimizer: {cfg.optimizer}")
+
+
+@torch.no_grad()
+def evaluate_mse(
+    model: nn.Module,
     X: torch.Tensor,
     y: torch.Tensor,
-) -> None:
+    device: torch.device,
+    batch_size: int = 1024,
+) -> float:
+    _validate_xy(X, y)
 
-    if X.ndim != 2 or X.shape[1] != 4:
+    model.eval()
+    loader = DataLoader(
+        TensorDataset(X, y),
+        batch_size=batch_size,
+        shuffle=False,
+        drop_last=False,
+    )
 
-        raise ValueError(
-            f"Expected X shape [N, 4], "
-            f"got {tuple(X.shape)}"
+    squared_error_sum = 0.0
+    n = 0
+
+    for xb, yb in loader:
+        xb = xb.to(device)
+        yb = yb.to(device)
+
+        pred = model(xb)
+        squared_error_sum += torch.sum((pred - yb) ** 2).item()
+        n += yb.numel()
+
+    return squared_error_sum / n
+
+
+def train_erm(
+    X_train: torch.Tensor,
+    y_train: torch.Tensor,
+    X_val: torch.Tensor,
+    y_val: torch.Tensor,
+    cfg: ERMConfig,
+    device: torch.device,
+    checkpoint_path: Optional[str | Path] = None,
+    normalization: Optional[Dict[str, torch.Tensor]] = None,
+    verbose: bool = True,
+) -> Tuple[nn.Module, Dict[str, object]]:
+    """
+    Train the common 4->64->64->1 MLP with standard ERM (mean MSE).
+
+    Validation MSE selects the best epoch.
+    The best model, not the final epoch, is returned.
+    """
+    _validate_xy(X_train, y_train)
+    _validate_xy(X_val, y_val)
+    set_seed(cfg.seed)
+
+    model = build_mlp().to(device)
+    criterion = nn.MSELoss(reduction="mean")
+    optimizer = build_optimizer(model, cfg)
+
+    generator = torch.Generator()
+    generator.manual_seed(cfg.seed)
+
+    train_loader = DataLoader(
+        TensorDataset(X_train, y_train),
+        batch_size=cfg.batch_size,
+        shuffle=True,
+        drop_last=False,
+        generator=generator,
+    )
+
+    history: List[Dict[str, float | int]] = []
+    best_val_mse = float("inf")
+    best_epoch = 0
+    best_state = copy.deepcopy(model.state_dict())
+    epochs_without_improvement = 0
+
+    for epoch in range(1, cfg.max_epochs + 1):
+        model.train()
+
+        train_squared_error_sum = 0.0
+        train_count = 0
+
+        for xb, yb in train_loader:
+            xb = xb.to(device)
+            yb = yb.to(device)
+
+            optimizer.zero_grad(set_to_none=True)
+            pred = model(xb)
+            loss = criterion(pred, yb)
+            loss.backward()
+            optimizer.step()
+
+            train_squared_error_sum += torch.sum((pred.detach() - yb) ** 2).item()
+            train_count += yb.numel()
+
+        train_mse = train_squared_error_sum / train_count
+        val_mse = evaluate_mse(
+            model,
+            X_val,
+            y_val,
+            device=device,
+            batch_size=max(cfg.batch_size, 1024),
         )
 
-    if y.ndim == 1:
+        history.append({
+            "epoch": epoch,
+            "train_mse": float(train_mse),
+            "val_mse": float(val_mse),
+        })
 
-        y = y.unsqueeze(1)
+        improved = val_mse < (best_val_mse - cfg.min_delta)
 
-    if y.ndim != 2 or y.shape[1] != 1:
+        if improved:
+            best_val_mse = val_mse
+            best_epoch = epoch
+            best_state = copy.deepcopy(model.state_dict())
+            epochs_without_improvement = 0
 
-        raise ValueError(
-            f"Expected y shape [N, 1], "
-            f"got {tuple(y.shape)}"
-        )
+            if checkpoint_path is not None:
+                checkpoint_path = Path(checkpoint_path)
+                checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
 
-    if X.shape[0] != y.shape[0]:
+                payload = {
+                    "model_state_dict": best_state,
+                    "seed": cfg.seed,
+                    "best_epoch": best_epoch,
+                    "best_val_mse": float(best_val_mse),
+                    "config": asdict(cfg),
+                }
 
-        raise ValueError(
-            "X and y must contain the same "
-            "number of samples."
-        )
+                if normalization is not None:
+                    payload["normalization"] = {
+                        key: value.detach().cpu()
+                        for key, value in normalization.items()
+                    }
 
-    if not torch.isfinite(X).all():
+                torch.save(payload, checkpoint_path)
+        else:
+            epochs_without_improvement += 1
 
-        raise ValueError(
-            "X contains NaN or Inf."
-        )
-
-    if not torch.isfinite(y).all():
-
-        raise ValueError(
-            "y contains NaN or Inf."
-        )
-
-
-# ============================================================
-# ERM
-# ============================================================
-
-class ERM:
-
-    def __init__(
-        self,
-        predictor: MLP,
-        device: str | torch.device,
-        config: ERMConfig,
-    ):
-
-        self.device = torch.device(
-            device
-        )
-
-        self.config = config
-
-        self.predictor = predictor.to(
-            self.device
-        )
-
-        self.criterion = nn.MSELoss()
-
-        self.history: Dict[
-            str,
-            List[float],
-        ] = {
-            "train_mse": [],
-        }
-
-
-    # ========================================================
-    # Optimizer
-    # ========================================================
-
-    def _build_optimizer(
-        self,
-    ) -> torch.optim.Optimizer:
-
-        name = (
-            self.config.optimizer
-            .lower()
-        )
-
-        if name == "adam":
-
-            return torch.optim.Adam(
-                self.predictor.parameters(),
-                lr=
-                    self.config.learning_rate,
-                weight_decay=
-                    self.config.weight_decay,
-            )
-
-        if name == "adamw":
-
-            return torch.optim.AdamW(
-                self.predictor.parameters(),
-                lr=
-                    self.config.learning_rate,
-                weight_decay=
-                    self.config.weight_decay,
-            )
-
-        if name == "sgd":
-
-            return torch.optim.SGD(
-                self.predictor.parameters(),
-                lr=
-                    self.config.learning_rate,
-                weight_decay=
-                    self.config.weight_decay,
-            )
-
-        raise ValueError(
-            f"Unsupported optimizer: "
-            f"{self.config.optimizer}"
-        )
-
-
-    # ========================================================
-    # Training
-    # ========================================================
-
-    def fit(
-        self,
-        X: torch.Tensor,
-        y: torch.Tensor,
-    ):
-
-        set_seed(
-            self.config.seed
-        )
-
-        X = (
-            X.detach()
-            .cpu()
-            .float()
-        )
-
-        y = (
-            y.detach()
-            .cpu()
-            .float()
-        )
-
-        if y.ndim == 1:
-
-            y = y.unsqueeze(1)
-
-        validate_xy(
-            X,
-            y,
-        )
-
-        dataset = TensorDataset(
-            X,
-            y,
-        )
-
-        generator = torch.Generator()
-
-        generator.manual_seed(
-            self.config.seed
-        )
-
-        loader = DataLoader(
-            dataset,
-            batch_size=
-                self.config.batch_size,
-            shuffle=True,
-            drop_last=False,
-            generator=generator,
-        )
-
-        optimizer = (
-            self._build_optimizer()
-        )
-
-        self.predictor.train()
-
-        if self.config.verbose:
-
-            print(
-                "\n=========================================="
-            )
-
-            print(
-                "ERM TRAINING"
-            )
-
-            print(
-                "=========================================="
-            )
-
-            print(
-                f"Samples       : {len(dataset)}"
-            )
-
-            print(
-                f"Batch size    : "
-                f"{self.config.batch_size}"
-            )
-
-            print(
-                f"Epochs        : "
-                f"{self.config.epochs}"
-            )
-
-            print(
-                f"Optimizer     : "
-                f"{self.config.optimizer}"
-            )
-
-            print(
-                f"Learning rate : "
-                f"{self.config.learning_rate}"
-            )
-
-            print(
-                f"Weight decay  : "
-                f"{self.config.weight_decay}"
-            )
-
-            print(
-                f"Seed          : "
-                f"{self.config.seed}"
-            )
-
-            print(
-                f"Device        : "
-                f"{self.device}"
-            )
-
-            print(
-                "==========================================\n"
-            )
-
-        for epoch in range(
-            1,
-            self.config.epochs + 1,
+        if verbose and (
+            epoch == 1
+            or epoch % 10 == 0
+            or improved and epoch <= 5
         ):
-
-            self.predictor.train()
-
-            total_squared_error = 0.0
-
-            total_elements = 0
-
-
-            for batch_X, batch_y in loader:
-
-                batch_X = batch_X.to(
-                    self.device
-                )
-
-                batch_y = batch_y.to(
-                    self.device
-                )
-
-                optimizer.zero_grad(
-                    set_to_none=True
-                )
-
-                prediction = (
-                    self.predictor(
-                        batch_X
-                    )
-                )
-
-                loss = self.criterion(
-                    prediction,
-                    batch_y,
-                )
-
-                if not torch.isfinite(
-                    loss
-                ):
-
-                    raise RuntimeError(
-                        "Non-finite ERM loss "
-                        f"at epoch {epoch}."
-                    )
-
-                loss.backward()
-
-                optimizer.step()
-
-                squared_error = (
-                    (
-                        prediction.detach()
-                        -
-                        batch_y
-                    )
-                    ** 2
-                )
-
-                total_squared_error += (
-                    squared_error.sum().item()
-                )
-
-                total_elements += (
-                    squared_error.numel()
-                )
-
-
-            epoch_mse = (
-                total_squared_error
-                /
-                max(
-                    total_elements,
-                    1,
-                )
+            print(
+                f"[ERM][seed={cfg.seed}] "
+                f"epoch={epoch:03d} "
+                f"train_mse={train_mse:.6f} "
+                f"val_mse={val_mse:.6f} "
+                f"best={best_val_mse:.6f}@{best_epoch}"
             )
 
-            self.history[
-                "train_mse"
-            ].append(
-                epoch_mse
-            )
-
-
-            if (
-                self.config.verbose
-                and
-                (
-                    epoch == 1
-                    or
-                    epoch == self.config.epochs
-                    or
-                    epoch % 10 == 0
-                )
-            ):
-
+        if epochs_without_improvement >= cfg.patience:
+            if verbose:
                 print(
-                    f"Epoch "
-                    f"{epoch:04d}/"
-                    f"{self.config.epochs} "
-                    f"| MSE="
-                    f"{epoch_mse:.6f}"
+                    f"[ERM][seed={cfg.seed}] early stopping at epoch {epoch}; "
+                    f"best epoch={best_epoch}, best val MSE={best_val_mse:.6f}"
                 )
+            break
+
+    model.load_state_dict(best_state)
+
+    result = {
+        "best_epoch": best_epoch,
+        "best_val_mse": float(best_val_mse),
+        "history": history,
+        "config": asdict(cfg),
+    }
+    return model, result
 
 
-        if self.config.verbose:
-
-            print(
-                "\nERM Training Complete."
-            )
-
-
-        return {
-            "predictor":
-                self.predictor,
-
-            "history":
-                self.history,
-        }
-
-
-    # ========================================================
-    # Prediction
-    # ========================================================
-
-    @torch.no_grad()
-    def predict(
-        self,
-        X: torch.Tensor,
-    ) -> torch.Tensor:
-
-        X = X.float()
-
-        if (
-            X.ndim != 2
-            or
-            X.shape[1] != 4
-        ):
-
-            raise ValueError(
-                f"Expected X shape [N, 4], "
-                f"got {tuple(X.shape)}"
-            )
-
-        self.predictor.eval()
-
-        prediction = (
-            self.predictor(
-                X.to(
-                    self.device
-                )
-            )
-        )
-
-        return (
-            prediction
-            .detach()
-            .cpu()
-        )
-
-
-    # ========================================================
-    # Evaluation
-    # ========================================================
-
-    @torch.no_grad()
-    def evaluate(
-        self,
-        X: torch.Tensor,
-        y: torch.Tensor,
-    ) -> float:
-
-        X = X.float()
-
-        y = y.float()
-
-        if y.ndim == 1:
-
-            y = y.unsqueeze(1)
-
-        validate_xy(
-            X,
-            y,
-        )
-
-        prediction = self.predict(
-            X
-        )
-
-        mse = (
-            (
-                prediction
-                -
-                y.cpu()
-            )
-            ** 2
-        ).mean()
-
-        return float(
-            mse.item()
-        )
-
-
-    # ========================================================
-    # State
-    # ========================================================
-
-    def state_dict(
-        self,
-    ):
-
-        return copy.deepcopy(
-            self.predictor.state_dict()
-        )
+def load_erm_checkpoint(
+    checkpoint_path: str | Path,
+    device: torch.device,
+) -> Tuple[nn.Module, Dict[str, object]]:
+    """
+    Load a seed-specific ERM checkpoint.
+    GAS-DRO can use the returned model_state_dict / model as its predictor initialization.
+    """
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    model = build_mlp().to(device)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    model.eval()
+    return model, checkpoint
