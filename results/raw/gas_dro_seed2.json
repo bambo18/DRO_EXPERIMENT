@@ -1,0 +1,12 @@
+{
+  "seed": 2,
+  "device": "cuda",
+  "erm_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/erm_seed2_best.pt",
+  "initial_erm_id_mse": 0.09172578430175782,
+  "final_gas_dro_id_mse": 0.09255688781738282,
+  "nominal_diffusion_seconds": 36.01400399208069,
+  "gas_dro_seconds": 4030.223031759262,
+  "final_mu": 6.3115126049347765,
+  "gas_dro_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/gas_dro_seed2_final.pt",
+  "ood_evaluation": "pending"
+}
