@@ -1,0 +1,504 @@
+{
+  "method": "ERM",
+  "selection_metric": "mean_across_seeds_of_worst_ood_validation_mse",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "train_csv": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\nominal\\train.csv",
+  "ood_validation_csvs": [
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\mild\\env_00.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\mild\\env_01.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\mild\\env_02.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\mild\\env_03.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\mild\\env_04.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\moderate\\env_00.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\moderate\\env_01.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\moderate\\env_02.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\moderate\\env_03.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\moderate\\env_04.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\strong\\env_00.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\strong\\env_01.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\strong\\env_02.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\strong\\env_03.csv",
+    "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\data\\ood\\validation\\strong\\env_04.csv"
+  ],
+  "normalization": "train_only",
+  "ood_test_used_for_selection": false,
+  "all_configs": [
+    {
+      "tag": "lr0p0002_bs128_wd0",
+      "config": {
+        "learning_rate": 0.0002,
+        "batch_size": 128,
+        "weight_decay": 0.0
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd0\\erm_seed0_best.pt",
+          "best_epoch": 104,
+          "worst_val_mse": 0.11403297119140625,
+          "average_val_mse": 0.0976181419881185
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd0\\erm_seed1_best.pt",
+          "best_epoch": 166,
+          "worst_val_mse": 0.10640886840820313,
+          "average_val_mse": 0.09506248860677083
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd0\\erm_seed2_best.pt",
+          "best_epoch": 47,
+          "worst_val_mse": 0.11928960571289063,
+          "average_val_mse": 0.10069003957112631
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd0\\erm_seed3_best.pt",
+          "best_epoch": 64,
+          "worst_val_mse": 0.11915292053222656,
+          "average_val_mse": 0.10039626719156901
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd0\\erm_seed4_best.pt",
+          "best_epoch": 192,
+          "worst_val_mse": 0.10582015686035157,
+          "average_val_mse": 0.09561472279866537
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.11294090454101563,
+      "mean_average_ood_val_mse": 0.09787633203125
+    },
+    {
+      "tag": "lr0p0002_bs128_wd1em05",
+      "config": {
+        "learning_rate": 0.0002,
+        "batch_size": 128,
+        "weight_decay": 1e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd1em05\\erm_seed0_best.pt",
+          "best_epoch": 104,
+          "worst_val_mse": 0.11423421020507812,
+          "average_val_mse": 0.09763588450113932
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd1em05\\erm_seed1_best.pt",
+          "best_epoch": 166,
+          "worst_val_mse": 0.10621614074707031,
+          "average_val_mse": 0.09500074147542317
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd1em05\\erm_seed2_best.pt",
+          "best_epoch": 47,
+          "worst_val_mse": 0.11903912963867187,
+          "average_val_mse": 0.10072951019287109
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd1em05\\erm_seed3_best.pt",
+          "best_epoch": 114,
+          "worst_val_mse": 0.10412460479736328,
+          "average_val_mse": 0.09526419677734375
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd1em05\\erm_seed4_best.pt",
+          "best_epoch": 192,
+          "worst_val_mse": 0.10580040588378906,
+          "average_val_mse": 0.09555039530436198
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10988289825439453,
+      "mean_average_ood_val_mse": 0.09683614565022786
+    },
+    {
+      "tag": "lr0p0002_bs128_wd3em05",
+      "config": {
+        "learning_rate": 0.0002,
+        "batch_size": 128,
+        "weight_decay": 3e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd3em05\\erm_seed0_best.pt",
+          "best_epoch": 35,
+          "worst_val_mse": 0.13037427368164062,
+          "average_val_mse": 0.10283674438476563
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd3em05\\erm_seed1_best.pt",
+          "best_epoch": 166,
+          "worst_val_mse": 0.10616666870117188,
+          "average_val_mse": 0.09464903279622396
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd3em05\\erm_seed2_best.pt",
+          "best_epoch": 47,
+          "worst_val_mse": 0.11885023193359374,
+          "average_val_mse": 0.10082039265950521
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd3em05\\erm_seed3_best.pt",
+          "best_epoch": 64,
+          "worst_val_mse": 0.11981611938476562,
+          "average_val_mse": 0.1005287710571289
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0002_bs128_wd3em05\\erm_seed4_best.pt",
+          "best_epoch": 192,
+          "worst_val_mse": 0.10575933837890625,
+          "average_val_mse": 0.0955032632446289
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.11619332641601562,
+      "mean_average_ood_val_mse": 0.09886764082845052
+    },
+    {
+      "tag": "lr0p0003_bs128_wd0",
+      "config": {
+        "learning_rate": 0.0003,
+        "batch_size": 128,
+        "weight_decay": 0.0
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd0\\erm_seed0_best.pt",
+          "best_epoch": 32,
+          "worst_val_mse": 0.12852070007324218,
+          "average_val_mse": 0.10272769917805989
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd0\\erm_seed1_best.pt",
+          "best_epoch": 69,
+          "worst_val_mse": 0.10710220642089843,
+          "average_val_mse": 0.09662191518147786
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd0\\erm_seed2_best.pt",
+          "best_epoch": 95,
+          "worst_val_mse": 0.10726671447753906,
+          "average_val_mse": 0.09533889668782553
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd0\\erm_seed3_best.pt",
+          "best_epoch": 88,
+          "worst_val_mse": 0.10544289245605469,
+          "average_val_mse": 0.09612141235351562
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd0\\erm_seed4_best.pt",
+          "best_epoch": 140,
+          "worst_val_mse": 0.10545942993164062,
+          "average_val_mse": 0.09529295094807942
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.110758388671875,
+      "mean_average_ood_val_mse": 0.09722057486979166
+    },
+    {
+      "tag": "lr0p0003_bs128_wd1em05",
+      "config": {
+        "learning_rate": 0.0003,
+        "batch_size": 128,
+        "weight_decay": 1e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed0_best.pt",
+          "best_epoch": 136,
+          "worst_val_mse": 0.10281312255859375,
+          "average_val_mse": 0.09525764241536458
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed1_best.pt",
+          "best_epoch": 69,
+          "worst_val_mse": 0.10675208282470704,
+          "average_val_mse": 0.09668897878011068
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed2_best.pt",
+          "best_epoch": 95,
+          "worst_val_mse": 0.10727484893798828,
+          "average_val_mse": 0.09535830474853516
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed3_best.pt",
+          "best_epoch": 88,
+          "worst_val_mse": 0.1049724365234375,
+          "average_val_mse": 0.09582267059326172
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed4_best.pt",
+          "best_epoch": 140,
+          "worst_val_mse": 0.10561449127197266,
+          "average_val_mse": 0.09516940144856771
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10548539642333984,
+      "mean_average_ood_val_mse": 0.09565939959716797
+    },
+    {
+      "tag": "lr0p0003_bs128_wd3em05",
+      "config": {
+        "learning_rate": 0.0003,
+        "batch_size": 128,
+        "weight_decay": 3e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd3em05\\erm_seed0_best.pt",
+          "best_epoch": 32,
+          "worst_val_mse": 0.12706867370605468,
+          "average_val_mse": 0.10238386627197266
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd3em05\\erm_seed1_best.pt",
+          "best_epoch": 106,
+          "worst_val_mse": 0.10669920043945312,
+          "average_val_mse": 0.09501814270019532
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd3em05\\erm_seed2_best.pt",
+          "best_epoch": 134,
+          "worst_val_mse": 0.10651784057617188,
+          "average_val_mse": 0.09520777821858724
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd3em05\\erm_seed3_best.pt",
+          "best_epoch": 104,
+          "worst_val_mse": 0.10504378662109375,
+          "average_val_mse": 0.09552068023681641
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd3em05\\erm_seed4_best.pt",
+          "best_epoch": 102,
+          "worst_val_mse": 0.10636301879882812,
+          "average_val_mse": 0.09573608439127604
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.11033850402832031,
+      "mean_average_ood_val_mse": 0.09677331036376953
+    },
+    {
+      "tag": "lr0p0005_bs128_wd0",
+      "config": {
+        "learning_rate": 0.0005,
+        "batch_size": 128,
+        "weight_decay": 0.0
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd0\\erm_seed0_best.pt",
+          "best_epoch": 88,
+          "worst_val_mse": 0.10642166442871094,
+          "average_val_mse": 0.09629161977132161
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd0\\erm_seed1_best.pt",
+          "best_epoch": 44,
+          "worst_val_mse": 0.10696839599609376,
+          "average_val_mse": 0.09645282185872396
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd0\\erm_seed2_best.pt",
+          "best_epoch": 52,
+          "worst_val_mse": 0.1098825454711914,
+          "average_val_mse": 0.09624769246419271
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd0\\erm_seed3_best.pt",
+          "best_epoch": 66,
+          "worst_val_mse": 0.10480394592285157,
+          "average_val_mse": 0.09571008188883463
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd0\\erm_seed4_best.pt",
+          "best_epoch": 41,
+          "worst_val_mse": 0.11077279052734375,
+          "average_val_mse": 0.09892335703531902
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10776986846923828,
+      "mean_average_ood_val_mse": 0.09672511460367839
+    },
+    {
+      "tag": "lr0p0005_bs128_wd1em05",
+      "config": {
+        "learning_rate": 0.0005,
+        "batch_size": 128,
+        "weight_decay": 1e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd1em05\\erm_seed0_best.pt",
+          "best_epoch": 122,
+          "worst_val_mse": 0.10292868041992187,
+          "average_val_mse": 0.09596311706542969
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd1em05\\erm_seed1_best.pt",
+          "best_epoch": 44,
+          "worst_val_mse": 0.10673306884765625,
+          "average_val_mse": 0.09647032368977865
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd1em05\\erm_seed2_best.pt",
+          "best_epoch": 47,
+          "worst_val_mse": 0.10981899566650391,
+          "average_val_mse": 0.09657230234781901
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd1em05\\erm_seed3_best.pt",
+          "best_epoch": 65,
+          "worst_val_mse": 0.10568544311523438,
+          "average_val_mse": 0.09587995778401692
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd1em05\\erm_seed4_best.pt",
+          "best_epoch": 41,
+          "worst_val_mse": 0.11071309204101562,
+          "average_val_mse": 0.09879081919352213
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10717585601806641,
+      "mean_average_ood_val_mse": 0.09673530401611329
+    },
+    {
+      "tag": "lr0p0005_bs128_wd3em05",
+      "config": {
+        "learning_rate": 0.0005,
+        "batch_size": 128,
+        "weight_decay": 3e-05
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd3em05\\erm_seed0_best.pt",
+          "best_epoch": 122,
+          "worst_val_mse": 0.10282439727783203,
+          "average_val_mse": 0.0957644189453125
+        },
+        {
+          "seed": 1,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd3em05\\erm_seed1_best.pt",
+          "best_epoch": 44,
+          "worst_val_mse": 0.10698948974609375,
+          "average_val_mse": 0.09652649078369141
+        },
+        {
+          "seed": 2,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd3em05\\erm_seed2_best.pt",
+          "best_epoch": 47,
+          "worst_val_mse": 0.10962104187011719,
+          "average_val_mse": 0.096640178120931
+        },
+        {
+          "seed": 3,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd3em05\\erm_seed3_best.pt",
+          "best_epoch": 65,
+          "worst_val_mse": 0.10568100128173828,
+          "average_val_mse": 0.09590805877685547
+        },
+        {
+          "seed": 4,
+          "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0005_bs128_wd3em05\\erm_seed4_best.pt",
+          "best_epoch": 41,
+          "worst_val_mse": 0.11079885559082031,
+          "average_val_mse": 0.09883511698404948
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10718295715332031,
+      "mean_average_ood_val_mse": 0.09673485272216797
+    }
+  ],
+  "selected": {
+    "tag": "lr0p0003_bs128_wd1em05",
+    "config": {
+      "learning_rate": 0.0003,
+      "batch_size": 128,
+      "weight_decay": 1e-05
+    },
+    "seed_results": [
+      {
+        "seed": 0,
+        "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed0_best.pt",
+        "best_epoch": 136,
+        "worst_val_mse": 0.10281312255859375,
+        "average_val_mse": 0.09525764241536458
+      },
+      {
+        "seed": 1,
+        "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed1_best.pt",
+        "best_epoch": 69,
+        "worst_val_mse": 0.10675208282470704,
+        "average_val_mse": 0.09668897878011068
+      },
+      {
+        "seed": 2,
+        "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed2_best.pt",
+        "best_epoch": 95,
+        "worst_val_mse": 0.10727484893798828,
+        "average_val_mse": 0.09535830474853516
+      },
+      {
+        "seed": 3,
+        "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed3_best.pt",
+        "best_epoch": 88,
+        "worst_val_mse": 0.1049724365234375,
+        "average_val_mse": 0.09582267059326172
+      },
+      {
+        "seed": 4,
+        "checkpoint": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\oodval_candidates\\erm\\lr0p0003_bs128_wd1em05\\erm_seed4_best.pt",
+        "best_epoch": 140,
+        "worst_val_mse": 0.10561449127197266,
+        "average_val_mse": 0.09516940144856771
+      }
+    ],
+    "selection_score_mean_worst_ood_val_mse": 0.10548539642333984,
+    "mean_average_ood_val_mse": 0.09565939959716797
+  },
+  "selected_checkpoint_dir": "C:\\Users\\USER\\Documents\\GitHub\\DRO_EXPERIMENT\\checkpoints\\final_oodval"
+}
