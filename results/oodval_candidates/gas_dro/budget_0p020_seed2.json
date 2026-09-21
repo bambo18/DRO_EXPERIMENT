@@ -1,0 +1,31 @@
+{
+  "seed": 2,
+  "run_tag": "budget_0p020",
+  "train_csv": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/data/nominal/train.csv",
+  "erm_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/final_oodval/erm_seed2_best.pt",
+  "candidate_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed2_final.pt",
+  "gas_dro_config": {
+    "outer_epochs": 15,
+    "generator_inner_epochs": 10,
+    "predictor_inner_epochs": 2,
+    "batch_size": 64,
+    "batch_repeat": 4,
+    "generator_lr": 1e-05,
+    "predictor_lr": 1e-05,
+    "ppo_clip": 0.4,
+    "mu": 1.0,
+    "eta": 0.1,
+    "budget": 0.02,
+    "adjust_timesteps": 15,
+    "step_size": 2,
+    "discount_factor": 0.05,
+    "p_s0": 0.0,
+    "grad_clip": null,
+    "verbose": false
+  },
+  "nominal_diffusion_seconds": 31.994673490524292,
+  "gas_dro_seconds": 4102.323403835297,
+  "final_mu": 6.235538057501241,
+  "ood_validation_evaluation": "pending external selector",
+  "ood_test_used": false
+}
