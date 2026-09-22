@@ -170,6 +170,10 @@ class VectorGasDRO:
             "ratio_max": [],
         }
 
+        # Global count of actual predictor optimizer.step() calls.
+        # Used only for checkpoint/model selection callbacks.
+        self.predictor_update_steps = 0
+
     @property
     def selected_timesteps(self) -> List[int]:
         """
@@ -1247,6 +1251,9 @@ class VectorGasDRO:
     def update_predictor(
         self,
         adversarial_joint: torch.Tensor,
+        after_optimizer_step: Optional[
+            Callable[[int, "VectorGasDRO"], None]
+        ] = None,
     ) -> List[float]:
         """
         Official GAS-DRO train_ml():
@@ -1356,6 +1363,17 @@ class VectorGasDRO:
 
                 optimizer.step()
 
+                # One actual MLP/predictor optimizer update has completed.
+                self.predictor_update_steps += 1
+
+                if after_optimizer_step is not None:
+                    after_optimizer_step(
+                        self.predictor_update_steps,
+                        self,
+                    )
+                    # Callback evaluation may switch to eval mode.
+                    self.predictor.train()
+
                 n = (
                     batch_x.shape[0]
                 )
@@ -1402,7 +1420,7 @@ class VectorGasDRO:
     def fit(
         self,
         real_joint: torch.Tensor,
-        outer_epoch_callback: Optional[
+        after_predictor_update: Optional[
             Callable[[int, "VectorGasDRO"], None]
         ] = None,
     ):
@@ -1899,22 +1917,9 @@ class VectorGasDRO:
             )
 
             self.update_predictor(
-                s_theta
+                s_theta,
+                after_optimizer_step=after_predictor_update,
             )
-
-            # ------------------------------------------------
-            # Optional model-selection callback.
-            # This is intentionally called only AFTER one full
-            # GAS-DRO outer epoch (generator + predictor update).
-            # The callback may evaluate OOD validation data and
-            # save the best checkpoint, but it must not backprop
-            # through the validation set.
-            # ------------------------------------------------
-            if outer_epoch_callback is not None:
-                outer_epoch_callback(
-                    outer,
-                    self,
-                )
 
         print(
             "\n=========================================="
@@ -1940,4 +1945,7 @@ class VectorGasDRO:
 
             "history":
                 self.history,
+
+            "predictor_update_steps":
+                self.predictor_update_steps,
         }

@@ -27,6 +27,7 @@ from methods.gas_dro.gas_dro import (
 
 FEATURE_COLUMNS = ["X1", "X2", "X3", "X4"]
 TARGET_COLUMN = "Y"
+EXPECTED_OOD_VAL_ENVS = 15
 
 
 def set_seed(seed: int) -> None:
@@ -71,15 +72,9 @@ def build_joint(
     y: torch.Tensor,
 ) -> torch.Tensor:
     if X.ndim != 2 or X.shape[1] != 4:
-        raise ValueError(
-            f"Expected X [N,4], got {tuple(X.shape)}"
-        )
-
+        raise ValueError(f"Expected X [N,4], got {tuple(X.shape)}")
     if y.ndim != 2 or y.shape[1] != 1:
-        raise ValueError(
-            f"Expected y [N,1], got {tuple(y.shape)}"
-        )
-
+        raise ValueError(f"Expected y [N,1], got {tuple(y.shape)}")
     return torch.cat([X, y], dim=1).float()
 
 
@@ -93,10 +88,7 @@ def load_erm_seed_checkpoint(
             f"Seed-matched final ERM checkpoint not found: {path}"
         )
 
-    checkpoint = torch.load(
-        path,
-        map_location=device,
-    )
+    checkpoint = torch.load(path, map_location=device)
 
     if int(checkpoint["seed"]) != seed:
         raise ValueError(
@@ -105,21 +97,17 @@ def load_erm_seed_checkpoint(
         )
 
     norm = checkpoint["normalization"]
-
     x_mean = torch.as_tensor(
         norm["x_mean"],
         dtype=torch.float32,
     ).reshape(1, 4)
-
     x_std = torch.as_tensor(
         norm["x_std"],
         dtype=torch.float32,
     ).reshape(1, 4)
 
     predictor = build_mlp().to(device)
-    predictor.load_state_dict(
-        checkpoint["model_state_dict"]
-    )
+    predictor.load_state_dict(checkpoint["model_state_dict"])
 
     return predictor, checkpoint, x_mean, x_std
 
@@ -131,88 +119,72 @@ def safe_tag(text: str) -> str:
     )
 
 
-def resolve_validation_paths(
-    val_root: Path | None,
-    val_csv: List[Path] | None,
-    expected_count: int,
-) -> List[Path]:
+def resolve_ood_val_csvs(args: argparse.Namespace) -> List[Path]:
     """
-    Resolve ONLY OOD-validation CSVs.
+    Resolve exactly the 15 held-out OOD validation environments.
 
-    Use either:
-        --val-root <directory>
-    which recursively loads every *.csv below that directory,
+    Two supported interfaces:
+      1) --val-root <folder>  -> recursively collect *.csv
+      2) --val-csv file1 ... file15
 
-    or:
-        --val-csv file1.csv file2.csv ...
-
-    OOD test files must never be supplied here.
+    OOD test files must NEVER be passed here.
     """
 
-    if (val_root is None) == (val_csv is None):
-        raise ValueError(
-            "Provide exactly one of --val-root or --val-csv."
-        )
-
-    if val_root is not None:
-        root = val_root.resolve()
+    if args.val_root is not None:
+        root = args.val_root.resolve()
         if not root.exists():
             raise FileNotFoundError(
                 f"OOD validation root not found: {root}"
             )
-        if not root.is_dir():
-            raise ValueError(
-                f"--val-root must be a directory: {root}"
-            )
 
-        paths = sorted(
+        csv_paths = sorted(
             p.resolve()
             for p in root.rglob("*.csv")
             if p.is_file()
         )
     else:
-        paths = []
-        assert val_csv is not None
+        csv_paths = [
+            p.resolve()
+            for p in args.val_csv
+        ]
 
-        for path in val_csv:
-            resolved = path.resolve()
-            if not resolved.exists():
-                raise FileNotFoundError(
-                    f"OOD validation CSV not found: {resolved}"
-                )
-            if not resolved.is_file():
-                raise ValueError(
-                    f"OOD validation path is not a file: {resolved}"
-                )
-            paths.append(resolved)
-
-        paths = sorted(paths)
-
-    if len(paths) == 0:
-        raise RuntimeError(
-            "No OOD-validation CSV files were found."
+    missing = [
+        p
+        for p in csv_paths
+        if not p.exists()
+    ]
+    if missing:
+        raise FileNotFoundError(
+            "Missing OOD validation CSV(s):\n"
+            + "\n".join(str(p) for p in missing)
         )
 
-    # Current experiment protocol uses 15 OOD-validation environments.
-    # Set --expected-val-envs 0 only if you intentionally change that protocol.
-    if expected_count > 0 and len(paths) != expected_count:
+    # Remove accidental duplicates while preserving order.
+    unique_paths: List[Path] = []
+    seen = set()
+    for path in csv_paths:
+        key = str(path)
+        if key not in seen:
+            seen.add(key)
+            unique_paths.append(path)
+
+    if len(unique_paths) != EXPECTED_OOD_VAL_ENVS:
         raise RuntimeError(
-            f"Expected {expected_count} OOD-validation environments, "
-            f"but found {len(paths)}.\n"
-            "Check --val-root/--val-csv. Do NOT point this at OOD test."
+            f"Expected exactly {EXPECTED_OOD_VAL_ENVS} OOD validation "
+            f"CSV environments, got {len(unique_paths)}.\n"
+            "Check that you supplied VALIDATION only, not test/train files."
         )
 
-    return paths
+    return unique_paths
 
 
 def load_ood_validation_envs(
-    paths: List[Path],
+    csv_paths: List[Path],
 ) -> List[Dict[str, object]]:
     envs: List[Dict[str, object]] = []
 
-    for path in paths:
+    for path in csv_paths:
         X, y = read_xy(path)
-
         envs.append(
             {
                 "path": path,
@@ -225,21 +197,16 @@ def load_ood_validation_envs(
 
 
 @torch.no_grad()
-def evaluate_worst_ood_validation(
+def evaluate_predictor_mse(
     model: torch.nn.Module,
-    environments: List[Dict[str, object]],
+    X_raw: torch.Tensor,
+    y_raw: torch.Tensor,
     x_mean: torch.Tensor,
     x_std: torch.Tensor,
     device: torch.device,
-) -> Tuple[float, float, List[Dict[str, object]]]:
-    """
-    Evaluate one checkpoint on every OOD-validation environment.
-
-    Selection metric:
-        worst OOD-val MSE = max_e MSE_e
-
-    Validation is used for model selection only; no gradients are computed.
-    """
+    batch_size: int = 4096,
+) -> float:
+    """Evaluate raw-target MSE using the ERM TRAIN-only X normalization."""
 
     was_training = model.training
     model.eval()
@@ -247,176 +214,133 @@ def evaluate_worst_ood_validation(
     mean = x_mean.to(device)
     std = x_std.to(device)
 
-    results: List[Dict[str, object]] = []
+    squared_error_sum = 0.0
+    count = 0
 
-    for env in environments:
-        path = env["path"]
-        X = env["X"]
-        y = env["y"]
+    for start in range(0, X_raw.shape[0], batch_size):
+        end = min(start + batch_size, X_raw.shape[0])
 
-        assert isinstance(path, Path)
-        assert isinstance(X, torch.Tensor)
-        assert isinstance(y, torch.Tensor)
+        X = X_raw[start:end].to(device)
+        y = y_raw[start:end].to(device)
 
-        X_device = X.to(device)
-        y_device = y.to(device)
+        X = (X - mean) / std
+        pred = model(X)
 
-        X_norm = (X_device - mean) / std
-        prediction = model(X_norm)
-
-        mse = torch.mean(
-            (prediction - y_device) ** 2
-        ).item()
-
-        results.append(
-            {
-                "environment": str(path),
-                "mse": float(mse),
-            }
+        squared_error_sum += float(
+            ((pred - y) ** 2).sum().item()
         )
+        count += int(y.numel())
 
     if was_training:
         model.train()
 
-    mse_values = [
+    return squared_error_sum / max(count, 1)
+
+
+@torch.no_grad()
+def evaluate_ood_validation(
+    model: torch.nn.Module,
+    ood_val_envs: List[Dict[str, object]],
+    x_mean: torch.Tensor,
+    x_std: torch.Tensor,
+    device: torch.device,
+) -> Tuple[float, float, List[Dict[str, object]]]:
+    """
+    Evaluate the SAME 15 OOD validation environments.
+
+    Selection metric for one checkpoint:
+        worst OOD-Val MSE = max(environment MSEs)
+    """
+
+    env_results: List[Dict[str, object]] = []
+
+    for index, env in enumerate(ood_val_envs):
+        mse = evaluate_predictor_mse(
+            model=model,
+            X_raw=env["X"],
+            y_raw=env["y"],
+            x_mean=x_mean,
+            x_std=x_std,
+            device=device,
+        )
+
+        path = env["path"]
+        env_results.append(
+            {
+                "env_index": index,
+                "file": str(path),
+                "mse": float(mse),
+            }
+        )
+
+    mses = [
         float(item["mse"])
-        for item in results
+        for item in env_results
     ]
 
-    worst_mse = max(mse_values)
-    average_mse = sum(mse_values) / len(mse_values)
+    worst_mse = max(mses)
+    average_mse = sum(mses) / len(mses)
 
     return (
         float(worst_mse),
         float(average_mse),
-        results,
+        env_results,
     )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Train ONE GAS-DRO tuning candidate from a seed-matched ERM "
-            "checkpoint. After every GAS-DRO outer epoch, evaluate OOD "
-            "validation and save the checkpoint with the lowest worst "
-            "OOD-validation MSE. OOD test is never loaded."
+            "Train ONE GAS-DRO tuning candidate with unified model selection. "
+            "The predictor starts from the seed-matched ERM checkpoint. "
+            "ERM initialization is selection step 0. After EVERY actual "
+            "predictor optimizer.step(), the same 15 OOD validation "
+            "environments are evaluated. The checkpoint with minimum "
+            "Worst OOD-Val MSE is selected. OOD test is never loaded here."
         )
     )
 
+    parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--train-csv", type=Path, required=True)
     parser.add_argument(
-        "--seed",
-        type=int,
-        required=True,
-    )
-
-    parser.add_argument(
-        "--train-csv",
+        "--erm-checkpoint-dir",
         type=Path,
-        required=True,
+        default=REPO_ROOT / "checkpoints" / "final_oodval",
+        help=(
+            "Must contain erm_seed{seed}_best.pt selected by OOD validation."
+        ),
     )
+    parser.add_argument("--run-tag", required=True)
 
-    val_group = parser.add_mutually_exclusive_group(
-        required=True
-    )
-
+    val_group = parser.add_mutually_exclusive_group(required=True)
     val_group.add_argument(
         "--val-root",
         type=Path,
         default=None,
         help=(
-            "Directory containing ONLY OOD-validation CSVs. "
-            "All *.csv files are loaded recursively."
+            "Folder containing ONLY the 15 OOD-validation CSV files. "
+            "CSV files are found recursively."
         ),
     )
-
     val_group.add_argument(
         "--val-csv",
         type=Path,
         nargs="+",
         default=None,
-        help=(
-            "Explicit list of OOD-validation CSV files. "
-            "Do NOT pass OOD-test files."
-        ),
+        help="Explicit list of the 15 OOD-validation CSV files.",
     )
 
-    parser.add_argument(
-        "--expected-val-envs",
-        type=int,
-        default=15,
-        help=(
-            "Expected number of OOD-validation environments. "
-            "Current protocol uses 15. Use 0 to disable this check."
-        ),
-    )
+    # Official GAS-DRO defaults. Keep these unless the GAS-DRO tuning
+    # protocol explicitly changes the corresponding hyperparameter.
+    parser.add_argument("--generator-lr", type=float, default=1e-5)
+    parser.add_argument("--predictor-lr", type=float, default=1e-5)
+    parser.add_argument("--ppo-clip", type=float, default=0.4)
+    parser.add_argument("--eta", type=float, default=0.1)
+    parser.add_argument("--budget", type=float, default=0.015)
 
-    parser.add_argument(
-        "--erm-checkpoint-dir",
-        type=Path,
-        default=(
-            REPO_ROOT
-            / "checkpoints"
-            / "final_oodval"
-        ),
-        help=(
-            "Must contain erm_seed{seed}_best.pt "
-            "selected by OOD validation."
-        ),
-    )
-
-    parser.add_argument(
-        "--run-tag",
-        required=True,
-    )
-
-    # Official defaults. Supply alternate values explicitly during the sweep.
-    parser.add_argument(
-        "--generator-lr",
-        type=float,
-        default=1e-5,
-    )
-
-    parser.add_argument(
-        "--predictor-lr",
-        type=float,
-        default=1e-5,
-    )
-
-    parser.add_argument(
-        "--ppo-clip",
-        type=float,
-        default=0.4,
-    )
-
-    parser.add_argument(
-        "--eta",
-        type=float,
-        default=0.1,
-    )
-
-    parser.add_argument(
-        "--budget",
-        type=float,
-        default=0.015,
-    )
-
-    parser.add_argument(
-        "--outer-epochs",
-        type=int,
-        default=15,
-    )
-
-    parser.add_argument(
-        "--generator-inner-epochs",
-        type=int,
-        default=10,
-    )
-
-    parser.add_argument(
-        "--predictor-inner-epochs",
-        type=int,
-        default=2,
-    )
+    parser.add_argument("--outer-epochs", type=int, default=15)
+    parser.add_argument("--generator-inner-epochs", type=int, default=10)
+    parser.add_argument("--predictor-inner-epochs", type=int, default=2)
 
     parser.add_argument(
         "--candidate-dir",
@@ -428,7 +352,6 @@ def main() -> None:
             / "gas_dro"
         ),
     )
-
     parser.add_argument(
         "--results-dir",
         type=Path,
@@ -439,134 +362,81 @@ def main() -> None:
             / "gas_dro"
         ),
     )
-
     parser.add_argument(
         "--device",
         choices=["auto", "cpu", "cuda"],
         default="auto",
     )
-
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-    )
+    parser.add_argument("--verbose", action="store_true")
 
     args = parser.parse_args()
     set_seed(args.seed)
 
     if args.device == "auto":
         device = torch.device(
-            "cuda"
-            if torch.cuda.is_available()
-            else "cpu"
+            "cuda" if torch.cuda.is_available() else "cpu"
         )
     else:
         device = torch.device(args.device)
 
     train_path = args.train_csv.resolve()
     if not train_path.exists():
-        parser.error(
-            f"Missing train CSV: {train_path}"
-        )
+        parser.error(f"Missing train CSV: {train_path}")
 
-    # --------------------------------------------------------
-    # Train data: optimization only
-    # --------------------------------------------------------
+    ood_val_paths = resolve_ood_val_csvs(args)
+    ood_val_envs = load_ood_validation_envs(ood_val_paths)
+
     X_train, y_train = read_xy(train_path)
-    real_joint = build_joint(
-        X_train,
-        y_train,
-    )
+    real_joint = build_joint(X_train, y_train)
 
-    # --------------------------------------------------------
-    # OOD validation: checkpoint/model selection only
-    # --------------------------------------------------------
-    val_paths = resolve_validation_paths(
-        val_root=args.val_root,
-        val_csv=args.val_csv,
-        expected_count=args.expected_val_envs,
-    )
-
-    ood_val_envs = load_ood_validation_envs(
-        val_paths
-    )
-
-    # --------------------------------------------------------
-    # Seed-matched ERM initialization
-    # --------------------------------------------------------
     erm_path = (
         args.erm_checkpoint_dir.resolve()
         / f"erm_seed{args.seed}_best.pt"
     )
 
-    (
-        predictor,
-        erm_checkpoint,
-        x_mean,
-        x_std,
-    ) = load_erm_seed_checkpoint(
+    predictor, erm_checkpoint, x_mean, x_std = load_erm_seed_checkpoint(
         erm_path,
         seed=args.seed,
         device=device,
     )
 
-    # --------------------------------------------------------
-    # Candidate output namespace
-    # --------------------------------------------------------
     tag = safe_tag(args.run_tag)
+    out_dir = args.candidate_dir.resolve() / tag
+    out_dir.mkdir(parents=True, exist_ok=True)
 
-    out_dir = (
-        args.candidate_dir.resolve()
-        / tag
-    )
-    out_dir.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    # The existing downstream selector can keep consuming *_final.pt.
-    # In this revised protocol, *_final.pt will contain the SELECTED
-    # best-OOD-validation iterate, not the last training iterate.
-    selected_ckpt_path = (
-        out_dir
-        / f"gas_dro_seed{args.seed}_final.pt"
-    )
-
-    # Audit copy saved whenever a new best checkpoint is found.
     best_ckpt_path = (
         out_dir
         / f"gas_dro_seed{args.seed}_best_oodval.pt"
     )
-
+    final_ckpt_path = (
+        out_dir
+        / f"gas_dro_seed{args.seed}_final.pt"
+    )
     nominal_path = (
         out_dir
         / f"gas_dro_seed{args.seed}_nominal_diffusion.pt"
     )
 
     print("\n==========================================")
-    print("GAS-DRO OOD-VAL BEST-CHECKPOINT TRAINING")
+    print("GAS-DRO OOD-VAL CANDIDATE TRAINING")
     print("==========================================")
-    print(f"Seed              : {args.seed}")
-    print(f"Run tag           : {tag}")
-    print(f"Device            : {device}")
-    print(f"Train samples     : {len(X_train)}")
-    print(f"OOD-val envs      : {len(ood_val_envs)}")
-    print(f"ERM checkpoint    : {erm_path}")
-    print(f"ERM seed          : {erm_checkpoint['seed']}")
-    print("Initialization    : seed-matched ERM checkpoint")
-    print("Normalization     : ERM TRAIN-only statistics")
-    print("OOD validation    : model selection only, no gradients")
-    print("Checkpoint metric : minimum worst OOD-val MSE")
-    print("OOD test          : NOT LOADED")
-    print("==========================================")
-
-    for i, path in enumerate(val_paths, start=1):
-        print(f"[OOD-VAL {i:02d}] {path}")
-
+    print(f"Seed                 : {args.seed}")
+    print(f"Run tag              : {tag}")
+    print(f"Train samples        : {len(X_train)}")
+    print(f"ERM checkpoint       : {erm_path}")
+    print(f"ERM seed             : {erm_checkpoint['seed']}")
+    print(f"OOD-Val environments : {len(ood_val_envs)}")
+    print("GAS-DRO batch size   : 64 (official setting)")
+    print("Step 0               : seed-matched ERM initialization")
+    print("Selection            : min Worst OOD-Val MSE")
+    print("Evaluation timing    : after EVERY predictor optimizer.step()")
+    print("Normalization        : ERM TRAIN-only stats")
+    print("OOD-Val gradients    : NEVER")
+    print("OOD test             : NOT loaded")
     print("==========================================\n")
 
     # --------------------------------------------------------
-    # Official nominal diffusion settings
+    # 1) Train nominal diffusion exactly as before.
     # --------------------------------------------------------
     nominal = VectorDiffusion(
         data_dim=5,
@@ -578,35 +448,24 @@ def main() -> None:
     ).to(device)
 
     t0 = time.time()
-
-    diffusion_history, standardizer = (
-        train_vector_diffusion_steps(
-            model=nominal,
-            data=real_joint,
-            device=device,
-            total_iterations=7000,
-            batch_size=64,
-            lr=1e-4,
-            standardizer=None,
-            grad_clip=None,
-            verbose_every=100,
-        )
+    diffusion_history, standardizer = train_vector_diffusion_steps(
+        model=nominal,
+        data=real_joint,
+        device=device,
+        total_iterations=7000,
+        batch_size=64,  # official GAS-DRO setting
+        lr=1e-4,
+        standardizer=None,
+        grad_clip=None,
+        verbose_every=100,
     )
-
     diffusion_seconds = time.time() - t0
 
-    # --------------------------------------------------------
-    # GAS-DRO config
-    # --------------------------------------------------------
     config = GasDROConfig(
         outer_epochs=args.outer_epochs,
-        generator_inner_epochs=(
-            args.generator_inner_epochs
-        ),
-        predictor_inner_epochs=(
-            args.predictor_inner_epochs
-        ),
-        batch_size=64,
+        generator_inner_epochs=args.generator_inner_epochs,
+        predictor_inner_epochs=args.predictor_inner_epochs,
+        batch_size=64,  # official GAS-DRO setting
         batch_repeat=4,
         generator_lr=args.generator_lr,
         predictor_lr=args.predictor_lr,
@@ -632,262 +491,251 @@ def main() -> None:
         predictor_x_std=x_std,
     )
 
-    # --------------------------------------------------------
-    # Best OOD-validation state for THIS seed/configuration
-    # --------------------------------------------------------
-    best_worst_ood_val = float("inf")
-    best_average_ood_val = float("inf")
-    best_outer_epoch = -1
-    best_env_results: List[Dict[str, object]] | None = None
+    # Save nominal diffusion in this candidate namespace.
+    nominal.save(
+        nominal_path,
+        standardizer=standardizer,
+        extra={
+            "seed": args.seed,
+            "purpose": "ood_validation_tuning_candidate",
+            "iterations": 7000,
+            "batch_size": 64,
+            "learning_rate": 1e-4,
+            "train_samples": int(real_joint.shape[0]),
+        },
+    )
 
-    def ood_val_callback(
-        outer_epoch: int,
+    # --------------------------------------------------------
+    # 2) Unified checkpoint/model selection.
+    #
+    # Candidate step 0 = initial seed-matched ERM weights.
+    # Then evaluate after EVERY actual predictor optimizer.step().
+    # --------------------------------------------------------
+    best: Dict[str, object] = {
+        "worst_mse": float("inf"),
+        "avg_mse": float("inf"),
+        "step": None,
+        "stage": None,
+        "env_results": None,
+    }
+
+    selection_history: List[Dict[str, object]] = []
+
+    def evaluate_and_maybe_save(
+        predictor_step: int,
         gas_model: VectorGasDRO,
+        stage: str,
     ) -> None:
-        nonlocal best_worst_ood_val
-        nonlocal best_average_ood_val
-        nonlocal best_outer_epoch
-        nonlocal best_env_results
-
-        (
-            worst_mse,
-            average_mse,
-            env_results,
-        ) = evaluate_worst_ood_validation(
+        worst_mse, avg_mse, env_results = evaluate_ood_validation(
             model=gas_model.predictor,
-            environments=ood_val_envs,
+            ood_val_envs=ood_val_envs,
             x_mean=x_mean,
             x_std=x_std,
             device=device,
         )
 
-        print("\n==========================================")
-        print("OOD-VALIDATION CHECKPOINT EVALUATION")
-        print("==========================================")
-        print(f"Seed              : {args.seed}")
-        print(f"Run tag           : {tag}")
-        print(f"Budget            : {config.budget:.6f}")
+        record: Dict[str, object] = {
+            "predictor_step": int(predictor_step),
+            "stage": stage,
+            "worst_ood_val_mse": float(worst_mse),
+            "average_ood_val_mse": float(avg_mse),
+        }
+        selection_history.append(record)
+
+        improved = worst_mse < float(best["worst_mse"])
+
+        print("\n------------------------------------------")
+        print("OOD-VALIDATION MODEL SELECTION")
+        print("------------------------------------------")
+        print(f"Predictor step : {predictor_step}")
+        print(f"Stage          : {stage}")
+        print(f"Average MSE    : {avg_mse:.9f}")
+        print(f"Worst MSE      : {worst_mse:.9f}")
         print(
-            f"Outer epoch       : "
-            f"{outer_epoch}/{config.outer_epochs}"
-        )
-        print(
-            f"Average OOD-val   : "
-            f"{average_mse:.9f}"
-        )
-        print(
-            f"Worst OOD-val     : "
-            f"{worst_mse:.9f}"
+            "Previous best  : "
+            + (
+                "inf"
+                if best["step"] is None
+                else f"{float(best['worst_mse']):.9f} "
+                     f"@ step {best['step']}"
+            )
         )
 
-        if worst_mse < best_worst_ood_val:
-            previous_best = best_worst_ood_val
-
-            best_worst_ood_val = float(worst_mse)
-            best_average_ood_val = float(average_mse)
-            best_outer_epoch = int(outer_epoch)
-            best_env_results = env_results
+        if improved:
+            best["worst_mse"] = float(worst_mse)
+            best["avg_mse"] = float(avg_mse)
+            best["step"] = int(predictor_step)
+            best["stage"] = stage
+            best["env_results"] = env_results
 
             torch.save(
                 {
                     "seed": args.seed,
                     "run_tag": tag,
+                    "budget": float(config.budget),
                     "erm_checkpoint": str(erm_path),
+                    "selected_predictor_step": int(predictor_step),
+                    "selected_stage": stage,
+                    "best_worst_ood_val_mse": float(worst_mse),
+                    "best_average_ood_val_mse": float(avg_mse),
+                    "ood_val_results": env_results,
                     "predictor_state_dict": (
                         gas_model.predictor.state_dict()
                     ),
                     "adversarial_diffusion_state_dict": (
                         gas_model.adversarial_diffusion.state_dict()
                     ),
-                    "nominal_diffusion_checkpoint": str(
-                        nominal_path
-                    ),
                     "predictor_normalization": {
                         "x_mean": x_mean.cpu(),
                         "x_std": x_std.cpu(),
-                        "source": (
-                            "seed_matched_erm_train_only"
-                        ),
+                        "source": "seed_matched_erm_train_only",
                     },
                     "gas_dro_config": vars(config),
-                    "selected_outer_epoch": int(
-                        best_outer_epoch
+                    "mu_at_selection": float(gas_model.mu),
+                    "history_at_selection": gas_model.history,
+                    "selection_metric": "worst_ood_validation_mse",
+                    "step0_erm_included": True,
+                    "selection_evaluation_timing": (
+                        "step0_and_after_every_predictor_optimizer_step"
                     ),
-                    "best_worst_ood_val_mse": float(
-                        best_worst_ood_val
-                    ),
-                    "best_average_ood_val_mse": float(
-                        best_average_ood_val
-                    ),
-                    "ood_validation_results": (
-                        best_env_results
-                    ),
-                    "final_mu": float(gas_model.mu),
-                    "history": gas_model.history,
-                    "protocol": {
-                        "seed_matched_erm": True,
-                        "train_for_gradients": (
-                            "train.csv only"
-                        ),
-                        "normalization": (
-                            "ERM checkpoint TRAIN stats only"
-                        ),
-                        "ood_validation_used_for_gradients": False,
-                        "ood_validation_used_for_model_selection": True,
-                        "checkpoint_selection_metric": (
-                            "minimum worst OOD-validation MSE"
-                        ),
-                        "checkpoint_evaluation_frequency": (
-                            "after every GAS-DRO outer epoch"
-                        ),
-                        "ood_test_used": False,
-                        "model_iterate": (
-                            "best_ood_validation"
-                        ),
-                    },
+                    "ood_test_used": False,
                 },
                 best_ckpt_path,
             )
 
-            print("NEW BEST          : YES")
-            if np.isfinite(previous_best):
-                print(
-                    f"Previous best     : "
-                    f"{previous_best:.9f}"
-                )
-            print(
-                f"Best outer epoch  : "
-                f"{best_outer_epoch}"
-            )
-            print(
-                f"Best checkpoint   : "
-                f"{best_ckpt_path}"
-            )
+            print("NEW BEST       : YES")
+            print(f"Saved          : {best_ckpt_path}")
         else:
-            print("NEW BEST          : NO")
-            print(
-                f"Current best      : "
-                f"{best_worst_ood_val:.9f} "
-                f"@ outer {best_outer_epoch}"
-            )
+            print("NEW BEST       : NO")
 
-        print("==========================================\n")
+        print("------------------------------------------\n")
 
-    # --------------------------------------------------------
-    # GAS-DRO training + best OOD-val checkpoint selection
-    # --------------------------------------------------------
-    t1 = time.time()
-
-    output = gas.fit(
-        real_joint=real_joint,
-        outer_epoch_callback=ood_val_callback,
+    # Step 0: ERM initialization itself is a valid model-selection candidate.
+    evaluate_and_maybe_save(
+        predictor_step=0,
+        gas_model=gas,
+        stage="erm_initialization_step0",
     )
 
-    gas_seconds = time.time() - t1
-
-    if best_outer_epoch < 0 or not best_ckpt_path.exists():
-        raise RuntimeError(
-            "Training finished but no best OOD-validation checkpoint "
-            "was saved."
+    def after_predictor_update(
+        predictor_step: int,
+        gas_model: VectorGasDRO,
+    ) -> None:
+        evaluate_and_maybe_save(
+            predictor_step=predictor_step,
+            gas_model=gas_model,
+            stage="after_predictor_optimizer_step",
         )
 
     # --------------------------------------------------------
-    # Save nominal diffusion in this candidate namespace
+    # 3) GAS-DRO training.
+    # The training objective/optimizer logic is unchanged.
+    # OOD-Val is used ONLY for checkpoint/model selection.
     # --------------------------------------------------------
-    nominal.save(
-        nominal_path,
-        standardizer=standardizer,
-        extra={
-            "seed": args.seed,
-            "purpose": (
-                "ood_validation_best_checkpoint_tuning_candidate"
-            ),
-            "iterations": 7000,
-            "batch_size": 64,
-            "learning_rate": 1e-4,
-            "train_samples": int(
-                real_joint.shape[0]
-            ),
-        },
+    t1 = time.time()
+    output = gas.fit(
+        real_joint=real_joint,
+        after_predictor_update=after_predictor_update,
     )
+    gas_seconds = time.time() - t1
 
-    # --------------------------------------------------------
-    # Preserve compatibility with the old selector:
-    # gas_dro_seed{seed}_final.pt now means the SELECTED model.
-    # It is copied from the best-OOD-val checkpoint, not from
-    # the last outer iteration.
-    # --------------------------------------------------------
-    best_checkpoint = torch.load(
+    if best["step"] is None or not best_ckpt_path.exists():
+        raise RuntimeError(
+            "No best OOD-validation checkpoint was created."
+        )
+
+    # Reload the selected checkpoint. This is the model that must be used
+    # for final held-out test evaluation, NOT the last training iterate.
+    selected_checkpoint = torch.load(
         best_ckpt_path,
-        map_location="cpu",
+        map_location=device,
     )
 
-    best_checkpoint["nominal_diffusion_checkpoint"] = str(
-        nominal_path
+    selected_predictor = build_mlp().to(device)
+    selected_predictor.load_state_dict(
+        selected_checkpoint["predictor_state_dict"]
     )
 
-    best_checkpoint["selected_checkpoint_source"] = str(
-        best_ckpt_path
-    )
-
+    # Keep the historical *_final.pt filename for compatibility with
+    # external selectors/evaluators. It now contains the BEST OOD-Val
+    # predictor, not the last iterate.
     torch.save(
-        best_checkpoint,
-        selected_ckpt_path,
+        {
+            "seed": args.seed,
+            "run_tag": tag,
+            "erm_checkpoint": str(erm_path),
+            "predictor_state_dict": (
+                selected_predictor.state_dict()
+            ),
+            "adversarial_diffusion_state_dict": (
+                selected_checkpoint[
+                    "adversarial_diffusion_state_dict"
+                ]
+            ),
+            "nominal_diffusion_checkpoint": str(nominal_path),
+            "predictor_normalization": {
+                "x_mean": x_mean.cpu(),
+                "x_std": x_std.cpu(),
+                "source": "seed_matched_erm_train_only",
+            },
+            "gas_dro_config": vars(config),
+            "selected_predictor_step": int(best["step"]),
+            "selected_stage": str(best["stage"]),
+            "best_worst_ood_val_mse": float(best["worst_mse"]),
+            "best_average_ood_val_mse": float(best["avg_mse"]),
+            "ood_val_results_at_best": best["env_results"],
+            "mu_at_selection": float(
+                selected_checkpoint["mu_at_selection"]
+            ),
+            "final_training_mu": float(output["mu"]),
+            "history": output["history"],
+            "selection_history": selection_history,
+            "protocol": {
+                "seed_matched_erm": True,
+                "erm_initialization_is_step0_candidate": True,
+                "gas_dro_batch_size": 64,
+                "gas_dro_batch_size_source": "official GAS-DRO setting",
+                "train_for_gradients": "train.csv only",
+                "normalization": "ERM checkpoint TRAIN stats only",
+                "ood_validation_environment_count": (
+                    EXPECTED_OOD_VAL_ENVS
+                ),
+                "ood_validation_used_for_gradients": False,
+                "ood_validation_used_for_model_selection": True,
+                "selection_metric": "minimum worst OOD-Val MSE",
+                "selection_evaluation_timing": (
+                    "step0 and after every predictor optimizer.step()"
+                ),
+                "model_iterate": "best_ood_validation",
+                "ood_test_used": False,
+            },
+        },
+        final_ckpt_path,
     )
 
-    # --------------------------------------------------------
-    # Result JSON
-    # --------------------------------------------------------
     result = {
         "seed": args.seed,
         "run_tag": tag,
         "train_csv": str(train_path),
         "ood_validation_csvs": [
             str(path)
-            for path in val_paths
+            for path in ood_val_paths
         ],
         "erm_checkpoint": str(erm_path),
-        "candidate_checkpoint": str(
-            selected_ckpt_path
-        ),
-        "best_checkpoint_audit_copy": str(
-            best_ckpt_path
-        ),
+        "best_checkpoint": str(best_ckpt_path),
+        "candidate_checkpoint": str(final_ckpt_path),
         "gas_dro_config": vars(config),
-        "nominal_diffusion_seconds": float(
-            diffusion_seconds
+        "nominal_diffusion_seconds": float(diffusion_seconds),
+        "gas_dro_seconds_including_oodval": float(gas_seconds),
+        "predictor_update_steps": int(
+            output["predictor_update_steps"]
         ),
-        "gas_dro_seconds": float(
-            gas_seconds
-        ),
-        "selected_outer_epoch": int(
-            best_checkpoint["selected_outer_epoch"]
-        ),
-        "best_worst_ood_val_mse": float(
-            best_checkpoint[
-                "best_worst_ood_val_mse"
-            ]
-        ),
-        "best_average_ood_val_mse": float(
-            best_checkpoint[
-                "best_average_ood_val_mse"
-            ]
-        ),
-        "final_mu_at_selected_checkpoint": float(
-            best_checkpoint["final_mu"]
-        ),
-        "selection": {
-            "criterion": (
-                "minimum worst OOD-validation MSE"
-            ),
-            "evaluation_frequency": (
-                "after every GAS-DRO outer epoch"
-            ),
-            "selected_model": (
-                "best OOD-validation checkpoint"
-            ),
-        },
-        "ood_validation_used_for_gradients": False,
+        "selected_predictor_step": int(best["step"]),
+        "selected_stage": str(best["stage"]),
+        "best_worst_ood_val_mse": float(best["worst_mse"]),
+        "best_average_ood_val_mse": float(best["avg_mse"]),
+        "final_training_mu": float(output["mu"]),
+        "selection_history": selection_history,
         "ood_test_used": False,
     }
 
@@ -895,12 +743,10 @@ def main() -> None:
         parents=True,
         exist_ok=True,
     )
-
     json_path = (
         args.results_dir.resolve()
         / f"{tag}_seed{args.seed}.json"
     )
-
     json_path.write_text(
         json.dumps(
             result,
@@ -915,23 +761,15 @@ def main() -> None:
     print("\n==========================================")
     print("GAS-DRO CANDIDATE COMPLETE")
     print("==========================================")
-    print(f"Seed              : {args.seed}")
-    print(f"Run tag           : {tag}")
-    print(f"Selected outer    : {best_outer_epoch}")
-    print(
-        f"Best worst OOD-val: "
-        f"{best_worst_ood_val:.9f}"
-    )
-    print(
-        f"Best avg OOD-val  : "
-        f"{best_average_ood_val:.9f}"
-    )
-    print(f"Selected checkpoint: {selected_ckpt_path}")
-    print(f"Best audit copy    : {best_ckpt_path}")
-    print(f"Result             : {json_path}")
-    print(f"Diffusion time (s) : {diffusion_seconds:.2f}")
-    print(f"GAS-DRO time (s)   : {gas_seconds:.2f}")
-    print("OOD test           : NOT USED")
+    print(f"Total predictor steps : {output['predictor_update_steps']}")
+    print(f"Selected step         : {best['step']}")
+    print(f"Selected stage        : {best['stage']}")
+    print(f"Best Worst OOD-Val    : {float(best['worst_mse']):.9f}")
+    print(f"Best Average OOD-Val  : {float(best['avg_mse']):.9f}")
+    print(f"Best checkpoint       : {best_ckpt_path}")
+    print(f"Final/selected ckpt   : {final_ckpt_path}")
+    print(f"Result                : {json_path}")
+    print("OOD test              : NOT USED")
     print("==========================================\n")
 
 
