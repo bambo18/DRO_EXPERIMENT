@@ -1,9 +1,27 @@
 {
   "seed": 3,
   "run_tag": "budget_0p015",
-  "train_csv": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/data/nominal/train.csv",
-  "erm_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/final_oodval/erm_seed3_best.pt",
-  "candidate_checkpoint": "/home/jovyan/Seonho_workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed3_final.pt",
+  "train_csv": "/workspace/DRO_EXPERIMENT/data/nominal/train.csv",
+  "ood_validation_csvs": [
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv"
+  ],
+  "erm_checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval/erm_seed3_best.pt",
+  "best_checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed3_best_oodval.pt",
+  "candidate_checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed3_final.pt",
   "gas_dro_config": {
     "outer_epochs": 15,
     "generator_inner_epochs": 10,
@@ -23,9 +41,201 @@
     "grad_clip": null,
     "verbose": false
   },
-  "nominal_diffusion_seconds": 28.703704357147217,
-  "gas_dro_seconds": 4085.8563952445984,
-  "final_mu": 6.394830809004463,
-  "ood_validation_evaluation": "pending external selector",
+  "nominal_diffusion_seconds": 21.88683795928955,
+  "gas_dro_seconds_including_oodval": 3941.324535369873,
+  "predictor_update_steps": 30,
+  "selected_predictor_step": 10,
+  "selected_stage": "after_predictor_optimizer_step",
+  "best_worst_ood_val_mse": 0.10415393676757813,
+  "best_average_ood_val_mse": 0.09554061431884767,
+  "final_training_mu": 6.394830809004463,
+  "selection_history": [
+    {
+      "predictor_step": 0,
+      "stage": "erm_initialization_step0",
+      "worst_ood_val_mse": 0.10497244262695313,
+      "average_ood_val_mse": 0.09582267130533854
+    },
+    {
+      "predictor_step": 1,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10481414794921876,
+      "average_ood_val_mse": 0.0957763250732422
+    },
+    {
+      "predictor_step": 2,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10465973815917969,
+      "average_ood_val_mse": 0.0957340488688151
+    },
+    {
+      "predictor_step": 3,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10449356994628907,
+      "average_ood_val_mse": 0.09571127746582028
+    },
+    {
+      "predictor_step": 4,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.1043329345703125,
+      "average_ood_val_mse": 0.09569151916503907
+    },
+    {
+      "predictor_step": 5,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.1042237045288086,
+      "average_ood_val_mse": 0.09564729960123698
+    },
+    {
+      "predictor_step": 6,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10419759521484374,
+      "average_ood_val_mse": 0.09560940755208333
+    },
+    {
+      "predictor_step": 7,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10418153533935547,
+      "average_ood_val_mse": 0.09558227467854816
+    },
+    {
+      "predictor_step": 8,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10417002716064454,
+      "average_ood_val_mse": 0.09555995218912762
+    },
+    {
+      "predictor_step": 9,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10416034545898438,
+      "average_ood_val_mse": 0.0955489921061198
+    },
+    {
+      "predictor_step": 10,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10415393676757813,
+      "average_ood_val_mse": 0.09554061431884767
+    },
+    {
+      "predictor_step": 11,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10416894073486328,
+      "average_ood_val_mse": 0.09553648050944011
+    },
+    {
+      "predictor_step": 12,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10418590545654297,
+      "average_ood_val_mse": 0.09553553426106771
+    },
+    {
+      "predictor_step": 13,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10418982238769531,
+      "average_ood_val_mse": 0.09555214497884114
+    },
+    {
+      "predictor_step": 14,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10419486083984375,
+      "average_ood_val_mse": 0.09557180836995442
+    },
+    {
+      "predictor_step": 15,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10419017333984375,
+      "average_ood_val_mse": 0.09557270436604819
+    },
+    {
+      "predictor_step": 16,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10418904876708984,
+      "average_ood_val_mse": 0.09557536478678384
+    },
+    {
+      "predictor_step": 17,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10421190490722657,
+      "average_ood_val_mse": 0.09558910776774088
+    },
+    {
+      "predictor_step": 18,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10423669738769531,
+      "average_ood_val_mse": 0.09560557261149087
+    },
+    {
+      "predictor_step": 19,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10425764465332031,
+      "average_ood_val_mse": 0.09560247182210288
+    },
+    {
+      "predictor_step": 20,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10428076477050781,
+      "average_ood_val_mse": 0.09560316802978515
+    },
+    {
+      "predictor_step": 21,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10429130554199219,
+      "average_ood_val_mse": 0.09559675313313803
+    },
+    {
+      "predictor_step": 22,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.1044138168334961,
+      "average_ood_val_mse": 0.09559652160644531
+    },
+    {
+      "predictor_step": 23,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10448008728027344,
+      "average_ood_val_mse": 0.09561276804606118
+    },
+    {
+      "predictor_step": 24,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10454718780517579,
+      "average_ood_val_mse": 0.09563161315917969
+    },
+    {
+      "predictor_step": 25,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10479070281982422,
+      "average_ood_val_mse": 0.09563214426676431
+    },
+    {
+      "predictor_step": 26,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10504077758789063,
+      "average_ood_val_mse": 0.09563653462727864
+    },
+    {
+      "predictor_step": 27,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.1051506607055664,
+      "average_ood_val_mse": 0.09564148223876953
+    },
+    {
+      "predictor_step": 28,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.1052623779296875,
+      "average_ood_val_mse": 0.09565014261881509
+    },
+    {
+      "predictor_step": 29,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10562533264160157,
+      "average_ood_val_mse": 0.0956721396891276
+    },
+    {
+      "predictor_step": 30,
+      "stage": "after_predictor_optimizer_step",
+      "worst_ood_val_mse": 0.10599923706054687,
+      "average_ood_val_mse": 0.09569801635742187
+    }
+  ],
   "ood_test_used": false
 }

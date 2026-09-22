@@ -1,0 +1,1901 @@
+{
+  "method": "GAS-DRO",
+  "selection_metric": "mean_across_seeds_of_worst_ood_validation_mse",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "ood_validation_csvs": [
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+    "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv"
+  ],
+  "normalization": "seed-matched ERM TRAIN statistics only",
+  "ood_test_used_for_selection": false,
+  "candidate_configs": [
+    {
+      "run_tag": "budget_0p010",
+      "config": {
+        "outer_epochs": 15,
+        "generator_inner_epochs": 10,
+        "predictor_inner_epochs": 2,
+        "batch_size": 64,
+        "batch_repeat": 4,
+        "generator_lr": 1e-05,
+        "predictor_lr": 1e-05,
+        "ppo_clip": 0.4,
+        "mu": 1.0,
+        "eta": 0.1,
+        "budget": 0.01,
+        "adjust_timesteps": 15,
+        "step_size": 2,
+        "discount_factor": 0.05,
+        "p_s0": 0.0,
+        "grad_clip": null,
+        "verbose": false
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed0_final.pt",
+          "run_tag": "budget_0p010",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.01,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09081575622558594
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09229535675048828
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09323987884521484
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09461445007324219
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09312591857910156
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09291674499511719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09295563049316406
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09467474365234375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09212262115478516
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09013995208740234
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.09959230041503907
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09824148559570313
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10260162658691406
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10262436370849609
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.0996193817138672
+            }
+          ],
+          "average_val_mse": 0.09530534739176433,
+          "worst_val_mse": 0.10262436370849609
+        },
+        {
+          "seed": 1,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed1_final.pt",
+          "run_tag": "budget_0p010",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.01,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09094264526367188
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09277130126953125
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09335699157714844
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09503322143554688
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09322534332275391
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.092682470703125
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.0932412628173828
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09563409118652344
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09230263671875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09174058532714843
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.1060483154296875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09695527038574218
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10349537353515625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10659490966796875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.1032075942993164
+            }
+          ],
+          "average_val_mse": 0.09648213419596355,
+          "worst_val_mse": 0.10659490966796875
+        },
+        {
+          "seed": 2,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed2_final.pt",
+          "run_tag": "budget_0p010",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.01,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09006080474853516
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09259159393310547
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09276730499267578
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09401553649902344
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09266282043457032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09239667358398437
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09256285095214843
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09454964904785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0915536361694336
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09183432312011719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.0953853775024414
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09810114135742187
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10496767272949219
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10727485046386719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.09965032958984375
+            }
+          ],
+          "average_val_mse": 0.09535830434163411,
+          "worst_val_mse": 0.10727485046386719
+        },
+        {
+          "seed": 3,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed3_final.pt",
+          "run_tag": "budget_0p010",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.01,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09088356018066407
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09212421569824218
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09288510131835938
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09441558380126953
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.0935554443359375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09198584747314453
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09277430725097656
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09424146728515626
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09156760101318359
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130500640869141
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10252921600341797
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09535345001220703
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10202734375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10415392608642578
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10330706481933594
+            }
+          ],
+          "average_val_mse": 0.09554060902913411,
+          "worst_val_mse": 0.10415392608642578
+        },
+        {
+          "seed": 4,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed4_final.pt",
+          "run_tag": "budget_0p010",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.01,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09021489105224609
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09206408996582031
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09311533508300782
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09440581665039062
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09325975494384765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09214980926513672
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09224348449707032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09404196929931641
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09192440338134765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130535888671874
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10017249145507813
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.094265234375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.09972996826171875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10561449279785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10303394012451172
+            }
+          ],
+          "average_val_mse": 0.09516940266927083,
+          "worst_val_mse": 0.10561449279785157
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10525250854492188,
+      "selection_score_std_worst_ood_val_mse": 0.0018799580388267196,
+      "mean_average_ood_val_mse": 0.09557115952555338
+    },
+    {
+      "run_tag": "budget_0p015",
+      "config": {
+        "outer_epochs": 15,
+        "generator_inner_epochs": 10,
+        "predictor_inner_epochs": 2,
+        "batch_size": 64,
+        "batch_repeat": 4,
+        "generator_lr": 1e-05,
+        "predictor_lr": 1e-05,
+        "ppo_clip": 0.4,
+        "mu": 1.0,
+        "eta": 0.1,
+        "budget": 0.015,
+        "adjust_timesteps": 15,
+        "step_size": 2,
+        "discount_factor": 0.05,
+        "p_s0": 0.0,
+        "grad_clip": null,
+        "verbose": false
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed0_final.pt",
+          "run_tag": "budget_0p015",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.015,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.0908158447265625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.0922956573486328
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09324004516601563
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09461466522216797
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09312603759765625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09291676635742188
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09295562286376953
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.0946748046875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0921225341796875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09013984985351563
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.0995915023803711
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09823891906738282
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10260092926025391
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10262445526123047
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.09961935729980469
+            }
+          ],
+          "average_val_mse": 0.09530513275146485,
+          "worst_val_mse": 0.10262445526123047
+        },
+        {
+          "seed": 1,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_final.pt",
+          "run_tag": "budget_0p015",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.015,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09094261779785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09277129211425782
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09335699615478515
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09503320007324219
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09322531127929687
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09268244781494141
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09324119873046875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09563404541015624
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09230259399414062
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09174056396484374
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10604866027832031
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09695527496337891
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.1034952651977539
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10659492034912109
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10320753173828125
+            }
+          ],
+          "average_val_mse": 0.09648212799072266,
+          "worst_val_mse": 0.10659492034912109
+        },
+        {
+          "seed": 2,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed2_final.pt",
+          "run_tag": "budget_0p015",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.015,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09006080474853516
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09259159393310547
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09276730499267578
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09401553649902344
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09266282043457032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09239667358398437
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09256285095214843
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09454964904785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0915536361694336
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09183432312011719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.0953853775024414
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09810114135742187
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10496767272949219
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10727485046386719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.09965032958984375
+            }
+          ],
+          "average_val_mse": 0.09535830434163411,
+          "worst_val_mse": 0.10727485046386719
+        },
+        {
+          "seed": 3,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed3_final.pt",
+          "run_tag": "budget_0p015",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.015,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09088356628417969
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09212423553466798
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09288511352539063
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.0944156005859375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09355547332763672
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09198584899902344
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09277431793212891
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09424146728515626
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0915676055908203
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130502471923828
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10252909545898438
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.0953534652709961
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10202732543945313
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10415393676757813
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10330714721679687
+            }
+          ],
+          "average_val_mse": 0.09554061492919923,
+          "worst_val_mse": 0.10415393676757813
+        },
+        {
+          "seed": 4,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed4_final.pt",
+          "run_tag": "budget_0p015",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.015,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09021489105224609
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09206408996582031
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09311533508300782
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09440581665039062
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09325975494384765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09214980926513672
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09224348449707032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09404196929931641
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09192440338134765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130535888671874
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10017249145507813
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.094265234375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.09972996826171875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10561449279785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10303394012451172
+            }
+          ],
+          "average_val_mse": 0.09516940266927083,
+          "worst_val_mse": 0.10561449279785157
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10525253112792969,
+      "selection_score_std_worst_ood_val_mse": 0.0018799263880464351,
+      "mean_average_ood_val_mse": 0.09557111653645833
+    },
+    {
+      "run_tag": "budget_0p020",
+      "config": {
+        "outer_epochs": 15,
+        "generator_inner_epochs": 10,
+        "predictor_inner_epochs": 2,
+        "batch_size": 64,
+        "batch_repeat": 4,
+        "generator_lr": 1e-05,
+        "predictor_lr": 1e-05,
+        "ppo_clip": 0.4,
+        "mu": 1.0,
+        "eta": 0.1,
+        "budget": 0.02,
+        "adjust_timesteps": 15,
+        "step_size": 2,
+        "discount_factor": 0.05,
+        "p_s0": 0.0,
+        "grad_clip": null,
+        "verbose": false
+      },
+      "seed_results": [
+        {
+          "seed": 0,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed0_final.pt",
+          "run_tag": "budget_0p020",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.02,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09081583557128907
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09229564666748047
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09324004058837891
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09461465759277343
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09312603454589843
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09291676635742188
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09295561370849609
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09467480163574218
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09212252655029297
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09013983764648438
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.09959152221679687
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09823890838623046
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10260093688964844
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10262445678710938
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.09961934509277344
+            }
+          ],
+          "average_val_mse": 0.09530512868245443,
+          "worst_val_mse": 0.10262445678710938
+        },
+        {
+          "seed": 1,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed1_final.pt",
+          "run_tag": "budget_0p020",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.02,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.0909425506591797
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09277113037109375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09335693969726562
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09503314361572265
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.0932251739501953
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09268248291015625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09324095764160156
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09563408203125
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0923026123046875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09174046020507813
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10605007019042968
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09695518646240234
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10349527740478516
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10659514465332032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10320726928710937
+            }
+          ],
+          "average_val_mse": 0.0964821654256185,
+          "worst_val_mse": 0.10659514465332032
+        },
+        {
+          "seed": 2,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed2_final.pt",
+          "run_tag": "budget_0p020",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.02,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09006080474853516
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09259159393310547
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09276730499267578
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09401553649902344
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09266282043457032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09239667358398437
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09256285095214843
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09454964904785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.0915536361694336
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09183432312011719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.0953853775024414
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09810114135742187
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10496767272949219
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10727485046386719
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.09965032958984375
+            }
+          ],
+          "average_val_mse": 0.09535830434163411,
+          "worst_val_mse": 0.10727485046386719
+        },
+        {
+          "seed": 3,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed3_final.pt",
+          "run_tag": "budget_0p020",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.02,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09088352661132812
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09212425842285156
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09288516540527343
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.0944156005859375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09355540771484375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09198580322265625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.0927742431640625
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09424138793945312
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09156766967773437
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130497131347656
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.102529638671875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.09535352630615235
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.10202693176269531
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.1041542266845703
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10330693969726562
+            }
+          ],
+          "average_val_mse": 0.09554061981201172,
+          "worst_val_mse": 0.1041542266845703
+        },
+        {
+          "seed": 4,
+          "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p020/gas_dro_seed4_final.pt",
+          "run_tag": "budget_0p020",
+          "config": {
+            "outer_epochs": 15,
+            "generator_inner_epochs": 10,
+            "predictor_inner_epochs": 2,
+            "batch_size": 64,
+            "batch_repeat": 4,
+            "generator_lr": 1e-05,
+            "predictor_lr": 1e-05,
+            "ppo_clip": 0.4,
+            "mu": 1.0,
+            "eta": 0.1,
+            "budget": 0.02,
+            "adjust_timesteps": 15,
+            "step_size": 2,
+            "discount_factor": 0.05,
+            "p_s0": 0.0,
+            "grad_clip": null,
+            "verbose": false
+          },
+          "environment_mses": [
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+              "mse": 0.09021489105224609
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+              "mse": 0.09206408996582031
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+              "mse": 0.09311533508300782
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+              "mse": 0.09440581665039062
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+              "mse": 0.09325975494384765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+              "mse": 0.09214980926513672
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+              "mse": 0.09224348449707032
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+              "mse": 0.09404196929931641
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+              "mse": 0.09192440338134765
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+              "mse": 0.09130535888671874
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+              "mse": 0.10017249145507813
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+              "mse": 0.094265234375
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+              "mse": 0.09972996826171875
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+              "mse": 0.10561449279785157
+            },
+            {
+              "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+              "mse": 0.10303394012451172
+            }
+          ],
+          "average_val_mse": 0.09516940266927083,
+          "worst_val_mse": 0.10561449279785157
+        }
+      ],
+      "selection_score_mean_worst_ood_val_mse": 0.10525263427734376,
+      "selection_score_std_worst_ood_val_mse": 0.001879923546553371,
+      "mean_average_ood_val_mse": 0.09557112418619791
+    }
+  ],
+  "selected": {
+    "run_tag": "budget_0p010",
+    "config": {
+      "outer_epochs": 15,
+      "generator_inner_epochs": 10,
+      "predictor_inner_epochs": 2,
+      "batch_size": 64,
+      "batch_repeat": 4,
+      "generator_lr": 1e-05,
+      "predictor_lr": 1e-05,
+      "ppo_clip": 0.4,
+      "mu": 1.0,
+      "eta": 0.1,
+      "budget": 0.01,
+      "adjust_timesteps": 15,
+      "step_size": 2,
+      "discount_factor": 0.05,
+      "p_s0": 0.0,
+      "grad_clip": null,
+      "verbose": false
+    },
+    "seed_results": [
+      {
+        "seed": 0,
+        "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed0_final.pt",
+        "run_tag": "budget_0p010",
+        "config": {
+          "outer_epochs": 15,
+          "generator_inner_epochs": 10,
+          "predictor_inner_epochs": 2,
+          "batch_size": 64,
+          "batch_repeat": 4,
+          "generator_lr": 1e-05,
+          "predictor_lr": 1e-05,
+          "ppo_clip": 0.4,
+          "mu": 1.0,
+          "eta": 0.1,
+          "budget": 0.01,
+          "adjust_timesteps": 15,
+          "step_size": 2,
+          "discount_factor": 0.05,
+          "p_s0": 0.0,
+          "grad_clip": null,
+          "verbose": false
+        },
+        "environment_mses": [
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+            "mse": 0.09081575622558594
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+            "mse": 0.09229535675048828
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+            "mse": 0.09323987884521484
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+            "mse": 0.09461445007324219
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+            "mse": 0.09312591857910156
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+            "mse": 0.09291674499511719
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+            "mse": 0.09295563049316406
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+            "mse": 0.09467474365234375
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+            "mse": 0.09212262115478516
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+            "mse": 0.09013995208740234
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+            "mse": 0.09959230041503907
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+            "mse": 0.09824148559570313
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+            "mse": 0.10260162658691406
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+            "mse": 0.10262436370849609
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+            "mse": 0.0996193817138672
+          }
+        ],
+        "average_val_mse": 0.09530534739176433,
+        "worst_val_mse": 0.10262436370849609
+      },
+      {
+        "seed": 1,
+        "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed1_final.pt",
+        "run_tag": "budget_0p010",
+        "config": {
+          "outer_epochs": 15,
+          "generator_inner_epochs": 10,
+          "predictor_inner_epochs": 2,
+          "batch_size": 64,
+          "batch_repeat": 4,
+          "generator_lr": 1e-05,
+          "predictor_lr": 1e-05,
+          "ppo_clip": 0.4,
+          "mu": 1.0,
+          "eta": 0.1,
+          "budget": 0.01,
+          "adjust_timesteps": 15,
+          "step_size": 2,
+          "discount_factor": 0.05,
+          "p_s0": 0.0,
+          "grad_clip": null,
+          "verbose": false
+        },
+        "environment_mses": [
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+            "mse": 0.09094264526367188
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+            "mse": 0.09277130126953125
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+            "mse": 0.09335699157714844
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+            "mse": 0.09503322143554688
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+            "mse": 0.09322534332275391
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+            "mse": 0.092682470703125
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+            "mse": 0.0932412628173828
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+            "mse": 0.09563409118652344
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+            "mse": 0.09230263671875
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+            "mse": 0.09174058532714843
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+            "mse": 0.1060483154296875
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+            "mse": 0.09695527038574218
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+            "mse": 0.10349537353515625
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+            "mse": 0.10659490966796875
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+            "mse": 0.1032075942993164
+          }
+        ],
+        "average_val_mse": 0.09648213419596355,
+        "worst_val_mse": 0.10659490966796875
+      },
+      {
+        "seed": 2,
+        "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed2_final.pt",
+        "run_tag": "budget_0p010",
+        "config": {
+          "outer_epochs": 15,
+          "generator_inner_epochs": 10,
+          "predictor_inner_epochs": 2,
+          "batch_size": 64,
+          "batch_repeat": 4,
+          "generator_lr": 1e-05,
+          "predictor_lr": 1e-05,
+          "ppo_clip": 0.4,
+          "mu": 1.0,
+          "eta": 0.1,
+          "budget": 0.01,
+          "adjust_timesteps": 15,
+          "step_size": 2,
+          "discount_factor": 0.05,
+          "p_s0": 0.0,
+          "grad_clip": null,
+          "verbose": false
+        },
+        "environment_mses": [
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+            "mse": 0.09006080474853516
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+            "mse": 0.09259159393310547
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+            "mse": 0.09276730499267578
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+            "mse": 0.09401553649902344
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+            "mse": 0.09266282043457032
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+            "mse": 0.09239667358398437
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+            "mse": 0.09256285095214843
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+            "mse": 0.09454964904785157
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+            "mse": 0.0915536361694336
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+            "mse": 0.09183432312011719
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+            "mse": 0.0953853775024414
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+            "mse": 0.09810114135742187
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+            "mse": 0.10496767272949219
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+            "mse": 0.10727485046386719
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+            "mse": 0.09965032958984375
+          }
+        ],
+        "average_val_mse": 0.09535830434163411,
+        "worst_val_mse": 0.10727485046386719
+      },
+      {
+        "seed": 3,
+        "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed3_final.pt",
+        "run_tag": "budget_0p010",
+        "config": {
+          "outer_epochs": 15,
+          "generator_inner_epochs": 10,
+          "predictor_inner_epochs": 2,
+          "batch_size": 64,
+          "batch_repeat": 4,
+          "generator_lr": 1e-05,
+          "predictor_lr": 1e-05,
+          "ppo_clip": 0.4,
+          "mu": 1.0,
+          "eta": 0.1,
+          "budget": 0.01,
+          "adjust_timesteps": 15,
+          "step_size": 2,
+          "discount_factor": 0.05,
+          "p_s0": 0.0,
+          "grad_clip": null,
+          "verbose": false
+        },
+        "environment_mses": [
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+            "mse": 0.09088356018066407
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+            "mse": 0.09212421569824218
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+            "mse": 0.09288510131835938
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+            "mse": 0.09441558380126953
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+            "mse": 0.0935554443359375
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+            "mse": 0.09198584747314453
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+            "mse": 0.09277430725097656
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+            "mse": 0.09424146728515626
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+            "mse": 0.09156760101318359
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+            "mse": 0.09130500640869141
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+            "mse": 0.10252921600341797
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+            "mse": 0.09535345001220703
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+            "mse": 0.10202734375
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+            "mse": 0.10415392608642578
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+            "mse": 0.10330706481933594
+          }
+        ],
+        "average_val_mse": 0.09554060902913411,
+        "worst_val_mse": 0.10415392608642578
+      },
+      {
+        "seed": 4,
+        "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p010/gas_dro_seed4_final.pt",
+        "run_tag": "budget_0p010",
+        "config": {
+          "outer_epochs": 15,
+          "generator_inner_epochs": 10,
+          "predictor_inner_epochs": 2,
+          "batch_size": 64,
+          "batch_repeat": 4,
+          "generator_lr": 1e-05,
+          "predictor_lr": 1e-05,
+          "ppo_clip": 0.4,
+          "mu": 1.0,
+          "eta": 0.1,
+          "budget": 0.01,
+          "adjust_timesteps": 15,
+          "step_size": 2,
+          "discount_factor": 0.05,
+          "p_s0": 0.0,
+          "grad_clip": null,
+          "verbose": false
+        },
+        "environment_mses": [
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_00.csv",
+            "mse": 0.09021489105224609
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_01.csv",
+            "mse": 0.09206408996582031
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_02.csv",
+            "mse": 0.09311533508300782
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_03.csv",
+            "mse": 0.09440581665039062
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/mild/env_04.csv",
+            "mse": 0.09325975494384765
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_00.csv",
+            "mse": 0.09214980926513672
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_01.csv",
+            "mse": 0.09224348449707032
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_02.csv",
+            "mse": 0.09404196929931641
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_03.csv",
+            "mse": 0.09192440338134765
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/moderate/env_04.csv",
+            "mse": 0.09130535888671874
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_00.csv",
+            "mse": 0.10017249145507813
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_01.csv",
+            "mse": 0.094265234375
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_02.csv",
+            "mse": 0.09972996826171875
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_03.csv",
+            "mse": 0.10561449279785157
+          },
+          {
+            "path": "/workspace/DRO_EXPERIMENT/data/ood/validation/strong/env_04.csv",
+            "mse": 0.10303394012451172
+          }
+        ],
+        "average_val_mse": 0.09516940266927083,
+        "worst_val_mse": 0.10561449279785157
+      }
+    ],
+    "selection_score_mean_worst_ood_val_mse": 0.10525250854492188,
+    "selection_score_std_worst_ood_val_mse": 0.0018799580388267196,
+    "mean_average_ood_val_mse": 0.09557115952555338
+  },
+  "selected_checkpoint_dir": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt"
+}

@@ -1,0 +1,1233 @@
+{
+  "method": "gas_dro",
+  "split": "test",
+  "device": "cuda",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "evaluation_only": true,
+  "normalization": "checkpoint train statistics only",
+  "seed_results": [
+    {
+      "seed": 0,
+      "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt/gas_dro_seed0_final.pt",
+      "environments": [
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09384017333984375
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09150419006347656
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09533102722167969
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09540604705810547
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09443252868652344
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09503853607177734
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09082438354492188
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09431837310791015
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09183532104492187
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09436112823486328
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09415016174316407
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09715730590820312
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09695991821289063
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09352545928955078
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09333619232177734
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09366519470214844
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09455074615478516
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09407599029541015
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09166192779541016
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09497023315429687
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09581028289794923
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09363935546875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09570376586914063
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10046715087890624
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10563482055664063
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09403851928710938
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09909749603271484
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09620149230957031
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10012960205078125
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.0938189712524414
+        }
+      ],
+      "summary": {
+        "num_environments": 30,
+        "average_ood_mse": 0.0951828764851888,
+        "worst_ood_mse": 0.10563482055664063,
+        "by_strength": {
+          "mild": {
+            "num_environments": 10,
+            "mean_mse": 0.09368917083740234,
+            "worst_mse": 0.09540604705810547
+          },
+          "moderate": {
+            "num_environments": 10,
+            "mean_mse": 0.09440531295776367,
+            "worst_mse": 0.09715730590820312
+          },
+          "strong": {
+            "num_environments": 10,
+            "mean_mse": 0.09745414566040039,
+            "worst_mse": 0.10563482055664063
+          }
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt/gas_dro_seed1_final.pt",
+      "environments": [
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09295751495361328
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09202893981933594
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09530697631835937
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09687935791015626
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09386671447753907
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.0945310043334961
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09118923187255859
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.094524267578125
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09193581390380859
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09428003387451171
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09539703674316406
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09814805755615234
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09819358215332032
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09316895446777344
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09360229797363281
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09252588195800782
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09506280212402343
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09379241638183594
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09308225708007813
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09742046813964844
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09787831726074218
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09402164001464844
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09616719818115234
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10404506072998047
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09918000030517578
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09523445739746093
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09963237609863282
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09592566375732423
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10047833862304688
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10102261657714844
+        }
+      ],
+      "summary": {
+        "num_environments": 30,
+        "average_ood_mse": 0.09571597595214844,
+        "worst_ood_mse": 0.10404506072998047,
+        "by_strength": {
+          "mild": {
+            "num_environments": 10,
+            "mean_mse": 0.0937499855041504,
+            "worst_mse": 0.09687935791015626
+          },
+          "moderate": {
+            "num_environments": 10,
+            "mean_mse": 0.09503937545776367,
+            "worst_mse": 0.09819358215332032
+          },
+          "strong": {
+            "num_environments": 10,
+            "mean_mse": 0.09835856689453125,
+            "worst_mse": 0.10404506072998047
+          }
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt/gas_dro_seed2_final.pt",
+      "environments": [
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.0936797134399414
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09113964233398437
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09480726013183594
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09558614196777344
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09384940490722657
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.0933855941772461
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09009307250976563
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09378445434570312
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09197156677246093
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09394597778320313
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.0945917755126953
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09753345031738281
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.0969048355102539
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09354248962402344
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.0937741455078125
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09262787170410157
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09547234344482422
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09455689392089844
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09243002014160157
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09463717803955078
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09560662536621094
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.0933648223876953
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09880654602050781
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10076602020263672
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09761686553955078
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09393801574707031
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09724480895996093
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09700560302734375
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10013740081787109
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09429743957519532
+        }
+      ],
+      "summary": {
+        "num_environments": 30,
+        "average_ood_mse": 0.09490326599121093,
+        "worst_ood_mse": 0.10076602020263672,
+        "by_strength": {
+          "mild": {
+            "num_environments": 10,
+            "mean_mse": 0.09322428283691406,
+            "worst_mse": 0.09558614196777344
+          },
+          "moderate": {
+            "num_environments": 10,
+            "mean_mse": 0.09460710037231446,
+            "worst_mse": 0.09753345031738281
+          },
+          "strong": {
+            "num_environments": 10,
+            "mean_mse": 0.0968784147644043,
+            "worst_mse": 0.10076602020263672
+          }
+        }
+      }
+    },
+    {
+      "seed": 3,
+      "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt/gas_dro_seed3_final.pt",
+      "environments": [
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09346370239257812
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09172362365722657
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09561830749511718
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09667282409667968
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09375086212158203
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09365970458984375
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09141575469970703
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09513924407958985
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09299518585205079
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.0942342498779297
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09421288146972656
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09703702392578124
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09629271850585938
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09324292907714844
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09336683197021485
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09367293701171875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09397366027832031
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.0937642822265625
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09148160400390624
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09592108306884765
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09676779479980469
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09289737243652343
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09642660827636719
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10002318420410156
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09777888336181641
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09399956359863282
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09870836181640626
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09556837768554688
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09913133850097657
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09992706604003906
+        }
+      ],
+      "summary": {
+        "num_environments": 30,
+        "average_ood_mse": 0.09509559870402018,
+        "worst_ood_mse": 0.10002318420410156,
+        "by_strength": {
+          "mild": {
+            "num_environments": 10,
+            "mean_mse": 0.09386734588623047,
+            "worst_mse": 0.09667282409667968
+          },
+          "moderate": {
+            "num_environments": 10,
+            "mean_mse": 0.09429659515380859,
+            "worst_mse": 0.09703702392578124
+          },
+          "strong": {
+            "num_environments": 10,
+            "mean_mse": 0.09712285507202148,
+            "worst_mse": 0.10002318420410156
+          }
+        }
+      }
+    },
+    {
+      "seed": 4,
+      "checkpoint": "/workspace/DRO_EXPERIMENT/checkpoints/final_oodval_bestckpt/gas_dro_seed4_final.pt",
+      "environments": [
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09316889190673829
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.0922125503540039
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09483465576171875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09550832824707031
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09349013671875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09472079162597656
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09098571929931641
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09398788452148438
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09197687835693359
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/mild/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "mild",
+          "num_samples": 5000,
+          "mse": 0.09440079345703126
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09308543395996094
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09637807312011719
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09737666931152343
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09293802490234375
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09360054321289063
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.0929136245727539
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09412721862792969
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09381639404296875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09271421356201172
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/moderate/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "moderate",
+          "num_samples": 5000,
+          "mse": 0.09567292022705078
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_00.csv",
+          "environment_name": "env_00",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09592957763671875
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_01.csv",
+          "environment_name": "env_01",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09258749694824218
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_02.csv",
+          "environment_name": "env_02",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09512540740966798
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_03.csv",
+          "environment_name": "env_03",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.10101871490478516
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_04.csv",
+          "environment_name": "env_04",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09769063110351563
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_05.csv",
+          "environment_name": "env_05",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09313506317138671
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_06.csv",
+          "environment_name": "env_06",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09706212768554688
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_07.csv",
+          "environment_name": "env_07",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09377879791259766
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_08.csv",
+          "environment_name": "env_08",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09769286804199219
+        },
+        {
+          "environment": "/workspace/DRO_EXPERIMENT/data/ood/test/strong/env_09.csv",
+          "environment_name": "env_09",
+          "strength": "strong",
+          "num_samples": 5000,
+          "mse": 0.09711517028808593
+        }
+      ],
+      "summary": {
+        "num_environments": 30,
+        "average_ood_mse": 0.0946348533630371,
+        "worst_ood_mse": 0.10101871490478516,
+        "by_strength": {
+          "mild": {
+            "num_environments": 10,
+            "mean_mse": 0.09352866302490234,
+            "worst_mse": 0.09550832824707031
+          },
+          "moderate": {
+            "num_environments": 10,
+            "mean_mse": 0.09426231155395508,
+            "worst_mse": 0.09737666931152343
+          },
+          "strong": {
+            "num_environments": 10,
+            "mean_mse": 0.09611358551025391,
+            "worst_mse": 0.10101871490478516
+          }
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "average_ood_mse": {
+      "mean": 0.09510651409912109,
+      "std": 0.0004003647566544906
+    },
+    "worst_ood_mse": {
+      "mean": 0.10229756011962891,
+      "std": 0.0024158285852695963
+    },
+    "by_strength": {
+      "mild": {
+        "mean_mse_across_seeds": 0.09361188961791993,
+        "std_mse_across_seeds": 0.0002487299982735609,
+        "num_seeds": 5
+      },
+      "moderate": {
+        "mean_mse_across_seeds": 0.09452213909912109,
+        "std_mse_across_seeds": 0.00031889678598375024,
+        "num_seeds": 5
+      },
+      "strong": {
+        "mean_mse_across_seeds": 0.09718551358032226,
+        "std_mse_across_seeds": 0.0008208962832211125,
+        "num_seeds": 5
+      }
+    }
+  }
+}
