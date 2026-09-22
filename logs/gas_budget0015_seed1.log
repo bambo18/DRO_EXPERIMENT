@@ -1,0 +1,882 @@
+==========================================
+START_TIME=2026-09-22T15:00:17+00:00
+GPU=1
+SEED=1
+BUDGET=0.015
+RUN_TAG=budget_0p015
+==========================================
+/workspace/DRO_EXPERIMENT/experiments/run_gas_dro_tunable.py:91: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(path, map_location=device)
+
+==========================================
+GAS-DRO OOD-VAL CANDIDATE TRAINING
+==========================================
+Seed                 : 1
+Run tag              : budget_0p015
+Train samples        : 10000
+ERM checkpoint       : /workspace/DRO_EXPERIMENT/checkpoints/final_oodval/erm_seed1_best.pt
+ERM seed             : 1
+OOD-Val environments : 15
+GAS-DRO batch size   : 64 (official setting)
+Step 0               : seed-matched ERM initialization
+Selection            : min Worst OOD-Val MSE
+Evaluation timing    : after EVERY predictor optimizer.step()
+Normalization        : ERM TRAIN-only stats
+OOD-Val gradients    : NEVER
+OOD test             : NOT loaded
+==========================================
+
+
+==========================================
+Official-Style Vector Diffusion Training
+==========================================
+Original samples   : 10000
+Expanded samples   : 448000
+DataLoader batches : 7000
+Shuffle            : False
+Drop last          : True
+Dimensions         : 5
+Timesteps          : 500
+Batch size         : 64
+Total iterations   : 7000
+Learning rate      : 0.0001
+Gradient clipping  : None
+Device             : cuda
+==========================================
+
+Iteration 00001/7000 | Loss: 1.008697 | Recent avg: 1.008697
+Iteration 00100/7000 | Loss: 0.860706 | Recent avg: 0.966289
+Iteration 00200/7000 | Loss: 0.577784 | Recent avg: 0.771809
+Iteration 00300/7000 | Loss: 0.042883 | Recent avg: 0.249308
+Iteration 00400/7000 | Loss: 0.013779 | Recent avg: 0.033606
+Iteration 00500/7000 | Loss: 0.021171 | Recent avg: 0.023363
+Iteration 00600/7000 | Loss: 0.055569 | Recent avg: 0.023153
+Iteration 00700/7000 | Loss: 0.048868 | Recent avg: 0.021707
+Iteration 00800/7000 | Loss: 0.016951 | Recent avg: 0.020398
+Iteration 00900/7000 | Loss: 0.002831 | Recent avg: 0.019788
+Iteration 01000/7000 | Loss: 0.022982 | Recent avg: 0.018921
+Iteration 01100/7000 | Loss: 0.002308 | Recent avg: 0.016183
+Iteration 01200/7000 | Loss: 0.007989 | Recent avg: 0.018121
+Iteration 01300/7000 | Loss: 0.015980 | Recent avg: 0.015812
+Iteration 01400/7000 | Loss: 0.013525 | Recent avg: 0.017538
+Iteration 01500/7000 | Loss: 0.002755 | Recent avg: 0.016306
+Iteration 01600/7000 | Loss: 0.003011 | Recent avg: 0.016744
+Iteration 01700/7000 | Loss: 0.006668 | Recent avg: 0.016997
+Iteration 01800/7000 | Loss: 0.035196 | Recent avg: 0.019018
+Iteration 01900/7000 | Loss: 0.022652 | Recent avg: 0.019330
+Iteration 02000/7000 | Loss: 0.008882 | Recent avg: 0.016076
+Iteration 02100/7000 | Loss: 0.043835 | Recent avg: 0.015205
+Iteration 02200/7000 | Loss: 0.006833 | Recent avg: 0.019159
+Iteration 02300/7000 | Loss: 0.025854 | Recent avg: 0.017518
+Iteration 02400/7000 | Loss: 0.012266 | Recent avg: 0.017140
+Iteration 02500/7000 | Loss: 0.017811 | Recent avg: 0.013640
+Iteration 02600/7000 | Loss: 0.007376 | Recent avg: 0.016166
+Iteration 02700/7000 | Loss: 0.023270 | Recent avg: 0.016193
+Iteration 02800/7000 | Loss: 0.005444 | Recent avg: 0.014838
+Iteration 02900/7000 | Loss: 0.012146 | Recent avg: 0.016499
+Iteration 03000/7000 | Loss: 0.012371 | Recent avg: 0.013944
+Iteration 03100/7000 | Loss: 0.015609 | Recent avg: 0.014767
+Iteration 03200/7000 | Loss: 0.020451 | Recent avg: 0.015338
+Iteration 03300/7000 | Loss: 0.009365 | Recent avg: 0.016602
+Iteration 03400/7000 | Loss: 0.028036 | Recent avg: 0.014765
+Iteration 03500/7000 | Loss: 0.022194 | Recent avg: 0.015330
+Iteration 03600/7000 | Loss: 0.004000 | Recent avg: 0.014812
+Iteration 03700/7000 | Loss: 0.021614 | Recent avg: 0.015402
+Iteration 03800/7000 | Loss: 0.007860 | Recent avg: 0.013948
+Iteration 03900/7000 | Loss: 0.020219 | Recent avg: 0.014821
+Iteration 04000/7000 | Loss: 0.019036 | Recent avg: 0.014498
+Iteration 04100/7000 | Loss: 0.006515 | Recent avg: 0.014020
+Iteration 04200/7000 | Loss: 0.011793 | Recent avg: 0.015219
+Iteration 04300/7000 | Loss: 0.003525 | Recent avg: 0.013695
+Iteration 04400/7000 | Loss: 0.015854 | Recent avg: 0.016996
+Iteration 04500/7000 | Loss: 0.037619 | Recent avg: 0.016905
+Iteration 04600/7000 | Loss: 0.039862 | Recent avg: 0.014723
+Iteration 04700/7000 | Loss: 0.018456 | Recent avg: 0.016491
+Iteration 04800/7000 | Loss: 0.018958 | Recent avg: 0.015172
+Iteration 04900/7000 | Loss: 0.012005 | Recent avg: 0.014042
+Iteration 05000/7000 | Loss: 0.029099 | Recent avg: 0.015203
+Iteration 05100/7000 | Loss: 0.014321 | Recent avg: 0.013295
+Iteration 05200/7000 | Loss: 0.007530 | Recent avg: 0.014415
+Iteration 05300/7000 | Loss: 0.012788 | Recent avg: 0.013555
+Iteration 05400/7000 | Loss: 0.022645 | Recent avg: 0.015509
+Iteration 05500/7000 | Loss: 0.002973 | Recent avg: 0.012463
+Iteration 05600/7000 | Loss: 0.013012 | Recent avg: 0.015053
+Iteration 05700/7000 | Loss: 0.027830 | Recent avg: 0.014993
+Iteration 05800/7000 | Loss: 0.014449 | Recent avg: 0.014880
+Iteration 05900/7000 | Loss: 0.009176 | Recent avg: 0.013354
+Iteration 06000/7000 | Loss: 0.020694 | Recent avg: 0.014078
+Iteration 06100/7000 | Loss: 0.003569 | Recent avg: 0.014131
+Iteration 06200/7000 | Loss: 0.007208 | Recent avg: 0.015637
+Iteration 06300/7000 | Loss: 0.035116 | Recent avg: 0.012231
+Iteration 06400/7000 | Loss: 0.010843 | Recent avg: 0.013905
+Iteration 06500/7000 | Loss: 0.017195 | Recent avg: 0.014909
+Iteration 06600/7000 | Loss: 0.016218 | Recent avg: 0.013487
+Iteration 06700/7000 | Loss: 0.026483 | Recent avg: 0.015906
+Iteration 06800/7000 | Loss: 0.002776 | Recent avg: 0.013031
+Iteration 06900/7000 | Loss: 0.011487 | Recent avg: 0.014577
+Iteration 07000/7000 | Loss: 0.013576 | Recent avg: 0.014089
+
+Official-Style Vector Diffusion Training Complete.
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 0
+Stage          : erm_initialization_step0
+Average MSE    : 0.096688979
+Worst MSE      : 0.106752078
+Previous best  : inf
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+Generating fixed nominal reference trajectory...
+Official-style s0 iterations : 628 (ceil(10000/64) * BATCH_REPEAT 4)
+Reference samples    : torch.Size([40192, 5])
+Reference trajectory : torch.Size([40192, 15, 5])
+a0                   : torch.Size([40192, 15])
+
+==========================================
+VECTOR GAS-DRO TRAINING
+==========================================
+Outer epochs           : 15
+Generator inner epochs : 10
+s0 iterations / inner  : 628
+BATCH_REPEAT           : 4
+Predictor inner epochs : 2
+Batch size             : 64
+Selected timesteps     : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+Initial mu             : 1.000000
+Budget                 : 0.015000
+Generator LR           : 1e-05
+Gradient clipping      : None
+==========================================
+
+
+------------------------------------------
+GAS-DRO Outer 1/15
+------------------------------------------
+Reference predictor loss | mean=0.793707 | max=17.236412
+Inner epoch 1 complete | JSM avg=0.363531 | mu=1.034853 | generator_lr=0.00001000
+Inner epoch 2 complete | JSM avg=0.367249 | mu=1.070078 | generator_lr=0.00000050
+Inner epoch 3 complete | JSM avg=0.369474 | mu=1.105525 | generator_lr=0.00000050
+Inner epoch 4 complete | JSM avg=0.366045 | mu=1.140630 | generator_lr=0.00000003
+Inner epoch 5 complete | JSM avg=0.365198 | mu=1.175650 | generator_lr=0.00000003
+Inner epoch 6 complete | JSM avg=0.364300 | mu=1.210580 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.367302 | mu=1.245810 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.364071 | mu=1.280717 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.363447 | mu=1.315562 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.365375 | mu=1.350599 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.850711
+  Max MSE  = 3.818592
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 1
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096677956
+Worst MSE      : 0.106760062
+Previous best  : 0.106752078 @ step 0
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 2
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096670380
+Worst MSE      : 0.106773212
+Previous best  : 0.106752078 @ step 0
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 2/15
+------------------------------------------
+Reference predictor loss | mean=0.793577 | max=17.222929
+Inner epoch 1 complete | JSM avg=0.366408 | mu=1.385740 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.365004 | mu=1.420741 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.364815 | mu=1.455722 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.366302 | mu=1.490852 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.366462 | mu=1.525998 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.368832 | mu=1.561382 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.367724 | mu=1.596654 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365495 | mu=1.631704 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.365879 | mu=1.666792 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.365884 | mu=1.701880 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.655482
+  Max MSE  = 2.735726
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 3
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096634578
+Worst MSE      : 0.106743860
+Previous best  : 0.106752078 @ step 0
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 4
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096602949
+Worst MSE      : 0.106717126
+Previous best  : 0.106743860 @ step 3
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 3/15
+------------------------------------------
+Reference predictor loss | mean=0.793030 | max=17.229008
+Inner epoch 1 complete | JSM avg=0.364320 | mu=1.736812 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.368970 | mu=1.772209 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.368147 | mu=1.807524 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.366682 | mu=1.842692 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.365848 | mu=1.877777 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.366340 | mu=1.912911 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.367586 | mu=1.948169 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.361658 | mu=1.982835 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.367177 | mu=2.018053 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.367891 | mu=2.053342 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.943508
+  Max MSE  = 7.128464
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 5
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096619062
+Worst MSE      : 0.106745657
+Previous best  : 0.106717126 @ step 4
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 6
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096638090
+Worst MSE      : 0.106778766
+Previous best  : 0.106717126 @ step 4
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 4/15
+------------------------------------------
+Reference predictor loss | mean=0.793197 | max=17.220764
+Inner epoch 1 complete | JSM avg=0.365860 | mu=2.088428 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.367892 | mu=2.123717 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.367958 | mu=2.159013 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.363090 | mu=2.193822 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.364174 | mu=2.228739 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365741 | mu=2.263814 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.365099 | mu=2.298823 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365923 | mu=2.333916 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.367970 | mu=2.369213 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.365775 | mu=2.404290 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.848551
+  Max MSE  = 5.896474
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 7
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096622000
+Worst MSE      : 0.106733890
+Previous best  : 0.106717126 @ step 4
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 8
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096610819
+Worst MSE      : 0.106692641
+Previous best  : 0.106717126 @ step 4
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 5/15
+------------------------------------------
+Reference predictor loss | mean=0.792858 | max=17.232428
+Inner epoch 1 complete | JSM avg=0.363972 | mu=2.439188 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.365543 | mu=2.474242 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.365763 | mu=2.509318 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.366094 | mu=2.544428 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.364661 | mu=2.579394 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.364771 | mu=2.614371 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.366480 | mu=2.649519 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365908 | mu=2.684609 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.366262 | mu=2.719736 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.366319 | mu=2.754868 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.243389
+  Max MSE  = 5.076093
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 9
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096593631
+Worst MSE      : 0.106656467
+Previous best  : 0.106692641 @ step 8
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 10
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096580562
+Worst MSE      : 0.106623569
+Previous best  : 0.106656467 @ step 9
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 6/15
+------------------------------------------
+Reference predictor loss | mean=0.792385 | max=17.242260
+Inner epoch 1 complete | JSM avg=0.367364 | mu=2.790104 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.367125 | mu=2.825316 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.366545 | mu=2.860471 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.364005 | mu=2.895372 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.366838 | mu=2.930555 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365545 | mu=2.965610 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.364840 | mu=3.000594 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.366357 | mu=3.035730 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.363971 | mu=3.070627 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.367799 | mu=3.105907 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.959201
+  Max MSE  = 6.187389
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 11
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096586277
+Worst MSE      : 0.106647896
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 12
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096597550
+Worst MSE      : 0.106679388
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 7/15
+------------------------------------------
+Reference predictor loss | mean=0.792630 | max=17.229044
+Inner epoch 1 complete | JSM avg=0.365709 | mu=3.140977 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.367503 | mu=3.176228 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.365092 | mu=3.211237 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.368082 | mu=3.246545 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.365966 | mu=3.281642 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.362682 | mu=3.316410 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.364718 | mu=3.351382 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365503 | mu=3.386432 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.363351 | mu=3.421267 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.365823 | mu=3.456349 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.314360
+  Max MSE  = 8.471158
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 13
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096598290
+Worst MSE      : 0.106653349
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 14
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096602037
+Worst MSE      : 0.106628557
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 8/15
+------------------------------------------
+Reference predictor loss | mean=0.792346 | max=17.235952
+Inner epoch 1 complete | JSM avg=0.368275 | mu=3.491677 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.364349 | mu=3.526612 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.364870 | mu=3.561599 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.365572 | mu=3.596656 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.365215 | mu=3.631677 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.367731 | mu=3.666950 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.365738 | mu=3.702024 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.367636 | mu=3.737288 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.366556 | mu=3.772444 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.366188 | mu=3.807562 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.223493
+  Max MSE  = 7.231411
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 15
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096588644
+Worst MSE      : 0.106636510
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 16
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096577436
+Worst MSE      : 0.106648471
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 9/15
+------------------------------------------
+Reference predictor loss | mean=0.792044 | max=17.223858
+Inner epoch 1 complete | JSM avg=0.366513 | mu=3.842714 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.363277 | mu=3.877541 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.364327 | mu=3.912474 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.368117 | mu=3.947786 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.364400 | mu=3.982726 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365890 | mu=4.017815 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.366237 | mu=4.052938 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.366493 | mu=4.088088 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.367136 | mu=4.123301 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.367709 | mu=4.158572 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.306345
+  Max MSE  = 7.780563
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 17
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096586956
+Worst MSE      : 0.106682660
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 18
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096599855
+Worst MSE      : 0.106723071
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 10/15
+------------------------------------------
+Reference predictor loss | mean=0.792012 | max=17.210518
+Inner epoch 1 complete | JSM avg=0.366673 | mu=4.193739 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.368149 | mu=4.229054 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.365602 | mu=4.264115 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.367360 | mu=4.299351 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.367048 | mu=4.334555 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365268 | mu=4.369582 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.365821 | mu=4.404664 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.364629 | mu=4.439627 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.367942 | mu=4.474921 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.368671 | mu=4.510289 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.759836
+  Max MSE  = 5.714070
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 19
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096576877
+Worst MSE      : 0.106724716
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 20
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096556384
+Worst MSE      : 0.106728136
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 11/15
+------------------------------------------
+Reference predictor loss | mean=0.791621 | max=17.199224
+Inner epoch 1 complete | JSM avg=0.364560 | mu=4.545245 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.369008 | mu=4.580645 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.364087 | mu=4.615554 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.362262 | mu=4.650280 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.365902 | mu=4.685371 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.368457 | mu=4.720716 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.367286 | mu=4.755945 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365665 | mu=4.791011 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.364342 | mu=4.825946 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.365831 | mu=4.861029 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.788049
+  Max MSE  = 5.023703
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 21
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096536707
+Worst MSE      : 0.106691422
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 22
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096520963
+Worst MSE      : 0.106658028
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 12/15
+------------------------------------------
+Reference predictor loss | mean=0.791105 | max=17.207836
+Inner epoch 1 complete | JSM avg=0.363244 | mu=4.895853 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.364848 | mu=4.930838 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.367454 | mu=4.966083 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.366441 | mu=5.001227 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.364717 | mu=5.036199 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.368603 | mu=5.071559 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.364028 | mu=5.106462 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365987 | mu=5.141561 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.364136 | mu=5.176474 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.363737 | mu=5.211348 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.255508
+  Max MSE  = 8.989811
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 23
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096514078
+Worst MSE      : 0.106637656
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 24
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096508751
+Worst MSE      : 0.106618210
+Previous best  : 0.106623569 @ step 10
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 13/15
+------------------------------------------
+Reference predictor loss | mean=0.790650 | max=17.202175
+Inner epoch 1 complete | JSM avg=0.367183 | mu=5.246567 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.367147 | mu=5.281781 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.367598 | mu=5.317041 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.367065 | mu=5.352247 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.367702 | mu=5.387518 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.364561 | mu=5.422474 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.362623 | mu=5.457236 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.368726 | mu=5.492609 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.364965 | mu=5.527605 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.366427 | mu=5.562748 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 1.081274
+  Max MSE  = 3.982331
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 25
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096498159
+Worst MSE      : 0.106617424
+Previous best  : 0.106618210 @ step 24
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 26
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096488764
+Worst MSE      : 0.106617970
+Previous best  : 0.106617424 @ step 25
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 14/15
+------------------------------------------
+Reference predictor loss | mean=0.790142 | max=17.196753
+Inner epoch 1 complete | JSM avg=0.368994 | mu=5.598147 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.368504 | mu=5.633498 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.365226 | mu=5.668520 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.365725 | mu=5.703593 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.364938 | mu=5.738587 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365968 | mu=5.773683 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.368545 | mu=5.809038 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.364817 | mu=5.844020 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.367616 | mu=5.879281 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.364034 | mu=5.914185 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.564122
+  Max MSE  = 4.247247
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 27
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096483830
+Worst MSE      : 0.106605505
+Previous best  : 0.106617424 @ step 25
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 28
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096482126
+Worst MSE      : 0.106594920
+Previous best  : 0.106605505 @ step 27
+NEW BEST       : YES
+Saved          : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+------------------------------------------
+
+
+------------------------------------------
+GAS-DRO Outer 15/15
+------------------------------------------
+Reference predictor loss | mean=0.789571 | max=17.195002
+Inner epoch 1 complete | JSM avg=0.366685 | mu=5.949353 | generator_lr=0.00000000
+Inner epoch 2 complete | JSM avg=0.367037 | mu=5.984557 | generator_lr=0.00000000
+Inner epoch 3 complete | JSM avg=0.368075 | mu=6.019864 | generator_lr=0.00000000
+Inner epoch 4 complete | JSM avg=0.367116 | mu=6.055076 | generator_lr=0.00000000
+Inner epoch 5 complete | JSM avg=0.365385 | mu=6.090114 | generator_lr=0.00000000
+Inner epoch 6 complete | JSM avg=0.365393 | mu=6.125154 | generator_lr=0.00000000
+Inner epoch 7 complete | JSM avg=0.362645 | mu=6.159918 | generator_lr=0.00000000
+Inner epoch 8 complete | JSM avg=0.365407 | mu=6.194959 | generator_lr=0.00000000
+Inner epoch 9 complete | JSM avg=0.366608 | mu=6.230120 | generator_lr=0.00000000
+Inner epoch 10 complete | JSM avg=0.366952 | mu=6.265315 | generator_lr=0.00000000
+
+S_theta before predictor update:
+  Samples  = 64
+  Mean MSE = 0.828645
+  Max MSE  = 4.677221
+
+Updating predictor on S_theta...
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 29
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096482130
+Worst MSE      : 0.106596997
+Previous best  : 0.106594920 @ step 28
+NEW BEST       : NO
+------------------------------------------
+
+
+------------------------------------------
+OOD-VALIDATION MODEL SELECTION
+------------------------------------------
+Predictor step : 30
+Stage          : after_predictor_optimizer_step
+Average MSE    : 0.096485850
+Worst MSE      : 0.106601440
+Previous best  : 0.106594920 @ step 28
+NEW BEST       : NO
+------------------------------------------
+
+
+==========================================
+VECTOR GAS-DRO TRAINING COMPLETE
+==========================================
+
+/workspace/DRO_EXPERIMENT/experiments/run_gas_dro_tunable.py:649: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  selected_checkpoint = torch.load(
+
+==========================================
+GAS-DRO CANDIDATE COMPLETE
+==========================================
+Total predictor steps : 30
+Selected step         : 28
+Selected stage        : after_predictor_optimizer_step
+Best Worst OOD-Val    : 0.106594920
+Best Average OOD-Val  : 0.096482126
+Best checkpoint       : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_best_oodval.pt
+Final/selected ckpt   : /workspace/DRO_EXPERIMENT/checkpoints/oodval_candidates/gas_dro/budget_0p015/gas_dro_seed1_final.pt
+Result                : /workspace/DRO_EXPERIMENT/results/oodval_candidates/gas_dro/budget_0p015_seed1.json
+OOD test              : NOT USED
+==========================================
+
+==========================================
+END_TIME=2026-09-22T16:10:23+00:00
+EXIT_CODE=0
+ELAPSED_SECONDS=4206
+ELAPSED=01:10:06
+==========================================
