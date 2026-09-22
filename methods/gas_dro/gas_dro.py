@@ -26,7 +26,7 @@ from __future__ import annotations
 import copy
 import math
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -1402,6 +1402,9 @@ class VectorGasDRO:
     def fit(
         self,
         real_joint: torch.Tensor,
+        outer_epoch_callback: Optional[
+            Callable[[int, "VectorGasDRO"], None]
+        ] = None,
     ):
 
         real_joint = (
@@ -1898,6 +1901,20 @@ class VectorGasDRO:
             self.update_predictor(
                 s_theta
             )
+
+            # ------------------------------------------------
+            # Optional model-selection callback.
+            # This is intentionally called only AFTER one full
+            # GAS-DRO outer epoch (generator + predictor update).
+            # The callback may evaluate OOD validation data and
+            # save the best checkpoint, but it must not backprop
+            # through the validation set.
+            # ------------------------------------------------
+            if outer_epoch_callback is not None:
+                outer_epoch_callback(
+                    outer,
+                    self,
+                )
 
         print(
             "\n=========================================="
